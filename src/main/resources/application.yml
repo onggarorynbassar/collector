@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/fb}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:root}
+  flyway:
+    schemas: ${DB_SCHEMA:collector}
+
+relativeRating:
+  max: 30000
+  min: 0
+  scoreDistribution:
+    COMMON:
+      1: 100
+      2: 70
+      3: 40
+      4: 20
+      5: -20
+      6: -40
+      7: -70
+      8: -100
