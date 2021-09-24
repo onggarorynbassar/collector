@@ -5,7 +5,7 @@ import java.util.UUID;
 
 @Entity
 @Table(schema = "collector", name = "player")
-public class Player {
+public class PlayerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
