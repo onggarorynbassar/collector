@@ -13,7 +13,7 @@ public interface RelativeRatingCalculator {
      *          result = (1 - (playerCurrentRating / 30000)) * ((30000 - (playerCurrentRating - averageOtherPlayersRating)) / 30000) * placeMultiplier<br><br>
      *
      *      Если занятое место в игре (place) во второй половине всех игроков(playersCount):<br>
-     *          result = (30000 + (playerCurrentRating - averageOtherPlayersRating)) * placeMultiplier<br><br>
+     *          result = (30000 + (playerCurrentRating - averageOtherPlayersRating / 30000)) * placeMultiplier<br><br>
      *
      *      placeMultiplier когда {@link LobbyPlayerCount#COMMON}<br>
      *          за 1 место: +100<br>
