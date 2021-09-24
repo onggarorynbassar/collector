@@ -9,19 +9,15 @@ import java.util.UUID;
 @Entity
 public class Player {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "id", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private UUID id;
-    @Column(name = "steam_id", updatable = true, nullable = false)
+    @Column(name = "steam_id", nullable = false)
     private String steam_id;
-    @Column(name = "simple_mmr", updatable = true, nullable = false)
-    private int simple_mmr;
-    @Column(name = "competitive_mmr", updatable = true, nullable = false)
-    private int competitive_mmr;
-    @Column(name = "relative_mmr", updatable = true, nullable = false)
-    private int relative_mmr;
+    @Column(name = "simple_mmr", nullable = false)
+    private int simpleMmr;
+    @Column(name = "competitive_mmr", nullable = false)
+    private int competitiveMmr;
+    @Column(name = "relative_mmr", nullable = false)
+    private int relativeMmr;
 }
