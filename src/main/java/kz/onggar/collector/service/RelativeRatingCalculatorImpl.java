@@ -20,22 +20,19 @@ public class RelativeRatingCalculatorImpl implements RelativeRatingCalculator {
             case 8 -> calculatedPlaceMultiplier = -100;
             default -> throw new IllegalStateException("Unexpected value: " + place);
         }
-
         return calculatedPlaceMultiplier * 1.0;
     }
 
     public int calculateNewRank(int playerCurrentRating, int averageOtherPlayersRating, int place, LobbyPlayerCount playersCount) {
-
         double doubledPlayerCurrentRating = playerCurrentRating * 1.0;
         double doubleAverageOtherPlayersRating = averageOtherPlayersRating * 1.0;
         double placeMultiplier = calculatePlaceMultiplier(place);
         double result = 0;
 
-
         if (Math.signum(placeMultiplier) == 1.0) {
             result = (1 - (doubledPlayerCurrentRating / 30000)) * ((30000 - (doubledPlayerCurrentRating - averageOtherPlayersRating)) / 30000) * placeMultiplier;
         } else if (Math.signum(placeMultiplier) == -1.0) {
-            result = (1 - (doubledPlayerCurrentRating / 30000)) * ((30000 + (doubledPlayerCurrentRating - averageOtherPlayersRating)) / 30000) * placeMultiplier;
+            result = ((30000 + (playerCurrentRating - doubleAverageOtherPlayersRating)) / 30000) * placeMultiplier;
         } else {
             return (int) result;
         }
