@@ -1,7 +1,5 @@
 package kz.onggar.collector;
 
-import kz.onggar.collector.component.LobbyPlayerCount;
-import kz.onggar.collector.service.RelativeRatingCalculatorImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
