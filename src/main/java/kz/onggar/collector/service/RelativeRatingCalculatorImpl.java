@@ -1,41 +1,64 @@
 package kz.onggar.collector.service;
 
 import kz.onggar.collector.component.LobbyPlayerCount;
+import kz.onggar.collector.configuration.RelativeRatingConfiguration;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class RelativeRatingCalculatorImpl implements RelativeRatingCalculator {
+    private final RelativeRatingConfiguration relativeRatingConfiguration;
 
-    private double calculatePlaceMultiplier(int place) {
-        int calculatedPlaceMultiplier;
-        switch (place) {
-            case 1 -> calculatedPlaceMultiplier = 100;
-            case 2 -> calculatedPlaceMultiplier = 70;
-            case 3 -> calculatedPlaceMultiplier = 40;
-            case 4 -> calculatedPlaceMultiplier = 20;
-            case 5 -> calculatedPlaceMultiplier = -20;
-            case 6 -> calculatedPlaceMultiplier = -40;
-            case 7 -> calculatedPlaceMultiplier = -70;
-            case 8 -> calculatedPlaceMultiplier = -100;
-            default -> throw new IllegalStateException("Unexpected value: " + place);
-        }
-        return calculatedPlaceMultiplier * 1.0;
+    public RelativeRatingCalculatorImpl(RelativeRatingConfiguration relativeRatingConfiguration) {
+        this.relativeRatingConfiguration = relativeRatingConfiguration;
     }
 
     public int calculateNewRank(int playerCurrentRating, int averageOtherPlayersRating, int place, LobbyPlayerCount playersCount) {
-        double doubledPlayerCurrentRating = playerCurrentRating * 1.0;
-        double doubleAverageOtherPlayersRating = averageOtherPlayersRating * 1.0;
-        double placeMultiplier = calculatePlaceMultiplier(place);
-        double result = 0;
+        double placeMultiplier = getPlaceMultiplier(place, playersCount);
+        double maxRating = relativeRatingConfiguration.getMax();
+        boolean isWinningPlace = isWinningPlace(place, playersCount);
 
-        if (Math.signum(placeMultiplier) == 1.0) {
-            result = (1 - (doubledPlayerCurrentRating / 30000)) * ((30000 - (doubledPlayerCurrentRating - averageOtherPlayersRating)) / 30000) * placeMultiplier;
-        } else if (Math.signum(placeMultiplier) == -1.0) {
-            result = ((30000 + (playerCurrentRating - doubleAverageOtherPlayersRating)) / 30000) * placeMultiplier;
+        if (playersCount == LobbyPlayerCount.COMMON) {
+            double topLimit, diffModifier;
+
+            if (isWinningPlace) {
+                topLimit = calculateTopLimit(playerCurrentRating, true);
+                diffModifier = ((maxRating - (playerCurrentRating - averageOtherPlayersRating)) / maxRating);
+            } else {
+                topLimit = calculateTopLimit(playerCurrentRating, false);
+                diffModifier = ((maxRating + (playerCurrentRating - averageOtherPlayersRating)) / maxRating);
+            }
+
+            var newRating = playerCurrentRating + (topLimit * diffModifier * placeMultiplier);
+            return (int) Math.round(newRating);
         } else {
-            return (int) result;
+            throw new IllegalArgumentException("Unexpected lobby player count");
         }
-        return (int) Math.round(result) + playerCurrentRating;
+    }
+
+    private double getPlaceMultiplier(int place, LobbyPlayerCount playerCount) {
+        if (playerCount == LobbyPlayerCount.COMMON) {
+            return relativeRatingConfiguration.getScoreDistribution().get(LobbyPlayerCount.COMMON.name()).get(place);
+        } else {
+            throw new IllegalArgumentException("Unexpected place");
+        }
+    }
+
+    private boolean isWinningPlace(int place, LobbyPlayerCount playerCount) {
+        if (playerCount == LobbyPlayerCount.COMMON) {
+            return place < 5;
+        } else {
+            throw new IllegalArgumentException("Unexpected place");
+        }
+    }
+
+    private double calculateTopLimit(int currentRating, boolean isWinningPlace) {
+        double maxRating = relativeRatingConfiguration.getMax();
+
+        if (isWinningPlace) {
+            return (1 - (currentRating / maxRating));
+        } else {
+            return 1;
+        }
     }
 }
