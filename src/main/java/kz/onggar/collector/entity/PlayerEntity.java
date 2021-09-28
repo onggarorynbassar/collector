@@ -19,4 +19,7 @@ public class PlayerEntity {
     private int competitiveMmr;
 
     private int relativeMmr;
+
+    @OneToOne(mappedBy = "player")
+    private PlayerPlaceEntity playerPlace;
 }
