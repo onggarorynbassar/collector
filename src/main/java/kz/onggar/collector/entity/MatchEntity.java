@@ -16,8 +16,15 @@ public class MatchEntity {
     @ManyToMany
     @JoinTable(
             name = "match_history",
-            joinColumns = { @JoinColumn(name = "match_id") },
-            inverseJoinColumns = { @JoinColumn(name = "player_place_id") })
+            joinColumns = {@JoinColumn(name = "match_id")},
+            inverseJoinColumns = {@JoinColumn(name = "player_place_id")})
     private List<PlayerPlaceEntity> playerPlaces = new ArrayList<>();
 
+    public List<PlayerPlaceEntity> getPlayerPlaces() {
+        return playerPlaces;
+    }
+
+    public void setPlayerPlaces(List<PlayerPlaceEntity> playerPlaces) {
+        this.playerPlaces = playerPlaces;
+    }
 }
