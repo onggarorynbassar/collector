@@ -5,7 +5,11 @@ spring:
     password: ${DB_PASSWORD:root}
   flyway:
     schemas: ${DB_SCHEMA:collector}
-
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
 rating:
   relative:
     max: 30000

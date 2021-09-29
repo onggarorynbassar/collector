@@ -12,7 +12,6 @@ public class PlayerPlaceEntity {
     private UUID id;
 
     @OneToOne
-    @JoinColumn(name = "player_id")
     private PlayerEntity player;
 
     private int place;
@@ -24,5 +23,4 @@ public class PlayerPlaceEntity {
     public void setPlace(int place) {
         this.place = place;
     }
-
 }
