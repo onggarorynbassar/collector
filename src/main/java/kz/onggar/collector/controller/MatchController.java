@@ -19,8 +19,8 @@ public class MatchController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createPlayer(@RequestBody MatchResult matchResult) {
+    public ResponseEntity<String> saveMatchResult(@RequestBody MatchResult matchResult) {
         matchService.saveMatchResult(matchResult);
-        return ResponseEntity.ok("Матч успешно сохранён!");
+        return ResponseEntity.ok("Works");
     }
 }

@@ -1,16 +1,16 @@
 package kz.onggar.collector.dto;
 
-import java.util.Map;
+import java.util.List;
 
 public class MatchResult {
 
-    Map<Integer, Player> playerPlaces;
+    List<PlayerWithPlace> playersWithPlaces;
 
-    public Map<Integer, Player> getPlayerPlaces() {
-        return playerPlaces;
+    public List<PlayerWithPlace> getPlayersWithPlaces() {
+        return playersWithPlaces;
     }
 
-    public void setPlayerPlaces(Map<Integer, Player> playerPlaces) {
-        this.playerPlaces = playerPlaces;
+    public void setPlayersWithPlaces(List<PlayerWithPlace> playersWithPlaces) {
+        this.playersWithPlaces = playersWithPlaces;
     }
 }

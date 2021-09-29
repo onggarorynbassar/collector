@@ -15,6 +15,7 @@ public class MatchEntity {
 
     @ManyToMany
     @JoinTable(
+            schema = "collector",
             name = "match_history",
             joinColumns = {@JoinColumn(name = "match_id")},
             inverseJoinColumns = {@JoinColumn(name = "player_place_id")})

@@ -20,9 +20,6 @@ public class PlayerEntity {
 
     private int relativeRating;
 
-    @OneToOne(mappedBy = "player")
-    private PlayerPlaceEntity playerPlace;
-
     public UUID getId() {
         return id;
     }
@@ -59,7 +56,4 @@ public class PlayerEntity {
         this.relativeRating = relativeMmr;
     }
 
-    public PlayerPlaceEntity getPlayerPlace() {
-        return playerPlace;
-    }
 }
