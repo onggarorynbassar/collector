@@ -1,15 +1,20 @@
 package kz.onggar.collector.service;
 
-import kz.onggar.collector.dto.Player;
 import kz.onggar.collector.entity.PlayerEntity;
+import kz.onggar.collector.openapi.dto.Player;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface PlayerService {
 
     Player createPlayer(Player player);
 
-    PlayerEntity findPlayerById(UUID id);
+    PlayerEntity getPlayerEntityById(UUID id);
 
-    PlayerEntity saveNewPlayer(String steamId);
+    Player getPlayerById(UUID id);
+
+    PlayerEntity createNewPlayer(String steamId);
+
+    List<Player> getAllPlayers();
 }

@@ -1,7 +1,7 @@
 package kz.onggar.collector.mapper;
 
-import kz.onggar.collector.dto.Player;
 import kz.onggar.collector.entity.PlayerEntity;
+import kz.onggar.collector.openapi.dto.Player;
 
 public class PlayerMapper {
 

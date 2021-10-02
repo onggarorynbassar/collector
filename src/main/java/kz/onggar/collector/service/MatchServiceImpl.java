@@ -1,10 +1,10 @@
 package kz.onggar.collector.service;
 
 
-import kz.onggar.collector.dto.MatchResult;
-import kz.onggar.collector.dto.PlayerWithPlace;
 import kz.onggar.collector.entity.MatchEntity;
 import kz.onggar.collector.entity.PlayerPlaceEntity;
+import kz.onggar.collector.openapi.dto.MatchResult;
+import kz.onggar.collector.openapi.dto.PlayerWithPlace;
 import kz.onggar.collector.repository.MatchRepository;
 import kz.onggar.collector.repository.PlayerPlaceRepository;
 import org.springframework.stereotype.Service;
@@ -30,18 +30,17 @@ public class MatchServiceImpl implements MatchService {
     @Override
     @Transactional
     public void saveMatchResult(MatchResult matchResult) {
-        MatchEntity matchEntity = new MatchEntity();
-        matchEntity = matchRepository.save(matchEntity);
+        MatchEntity matchEntity = matchRepository.save(new MatchEntity());
 
         var playersWithPlaces = matchResult.getPlayersWithPlaces();
 
         for (PlayerWithPlace playerWithPlace : playersWithPlaces) {
             PlayerPlaceEntity playerPlaceEntity = new PlayerPlaceEntity();
             if (playerWithPlace.getPlayerId() != null) {
-                var foundPlayer = playerService.findPlayerById(playerWithPlace.getPlayerId());
+                var foundPlayer = playerService.getPlayerEntityById(playerWithPlace.getPlayerId());
                 playerPlaceEntity.setPlayer(foundPlayer);
             } else {
-                var savedNewPlayer = playerService.saveNewPlayer(playerWithPlace.getSteamId());
+                var savedNewPlayer = playerService.createNewPlayer(playerWithPlace.getSteamId());
                 playerPlaceEntity.setPlayer(savedNewPlayer);
 
             }

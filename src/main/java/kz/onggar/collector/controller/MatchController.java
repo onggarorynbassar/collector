@@ -1,6 +1,7 @@
 package kz.onggar.collector.controller;
 
-import kz.onggar.collector.dto.MatchResult;
+import kz.onggar.collector.openapi.api.MatchesApi;
+import kz.onggar.collector.openapi.dto.MatchResult;
 import kz.onggar.collector.service.MatchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,9 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
-@RequestMapping("/matches")
-public class MatchController {
+public class MatchController implements MatchesApi {
 
     private final MatchService matchService;
 
@@ -18,9 +20,9 @@ public class MatchController {
         this.matchService = matchService;
     }
 
-    @PostMapping
-    public ResponseEntity<String> saveMatchResult(@RequestBody MatchResult matchResult) {
+    @Override
+    public ResponseEntity<UUID> saveMatchResults(MatchResult matchResult) {
         matchService.saveMatchResult(matchResult);
-        return ResponseEntity.ok("Works");
+        return ResponseEntity.ok().build();
     }
 }

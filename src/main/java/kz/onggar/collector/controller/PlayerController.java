@@ -1,16 +1,17 @@
 package kz.onggar.collector.controller;
 
-import kz.onggar.collector.dto.Player;
+import kz.onggar.collector.openapi.api.PlayersApi;
+import kz.onggar.collector.openapi.dto.Player;
 import kz.onggar.collector.service.PlayerService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.UUID;
+
 @RestController
-@RequestMapping("/players")
-public class PlayerController {
+public class PlayerController implements PlayersApi {
 
     private final PlayerService playerService;
 
@@ -18,9 +19,19 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    @PostMapping
-    public ResponseEntity<Player> createPlayer(@RequestBody Player player) {
+    @Override
+    public ResponseEntity<Player> createNewPlayer(@RequestBody Player player) {
         var savedPlayer = playerService.createPlayer(player);
         return ResponseEntity.ok(savedPlayer);
+    }
+
+    @Override
+    public ResponseEntity<List<Player>> getAllPlayers() {
+        return ResponseEntity.ok(playerService.getAllPlayers());
+    }
+
+    @Override
+    public ResponseEntity<Player> getPlayerById(UUID id) {
+        return ResponseEntity.ok(playerService.getPlayerById(id));
     }
 }

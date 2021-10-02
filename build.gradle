@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.5.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id "org.openapi.generator" version "5.2.1"
 }
 
 group = 'kz.onggar'
@@ -21,7 +22,30 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'io.springfox:springfox-swagger2:3.0.0'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.10'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.1.11'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.1'
+
 }
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$rootDir/src/main/resources/specs/collector.yaml".toString()
+    outputDir = "$rootDir/".toString()
+    apiPackage = "kz.onggar.collector.openapi.api"
+    invokerPackage = "kz.onggar.collector.openapi.api"
+    modelPackage = "kz.onggar.collector.openapi.dto"
+    configOptions = [
+            dateLibrary: "java8",
+            interfaceOnly: "true"
+    ]
+    generateApiDocumentation = false
+    generateModelDocumentation = false
+    generateModelTests = false
+    generateApiTests = false
+}
+
+compileJava.dependsOn tasks.openApiGenerate
 
 test {
     useJUnitPlatform()
