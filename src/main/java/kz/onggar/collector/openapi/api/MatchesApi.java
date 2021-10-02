@@ -5,6 +5,7 @@
  */
 package kz.onggar.collector.openapi.api;
 
+import kz.onggar.collector.openapi.dto.Match;
 import kz.onggar.collector.openapi.dto.MatchResult;
 import java.util.UUID;
 import io.swagger.annotations.*;
@@ -22,7 +23,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-10-02T20:37:05.876957300+06:00[Asia/Almaty]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-10-02T22:38:59.113612700+06:00[Asia/Almaty]")
 @Validated
 @Api(value = "matches", description = "the matches API")
 public interface MatchesApi {
@@ -30,6 +31,35 @@ public interface MatchesApi {
     default Optional<NativeWebRequest> getRequest() {
         return Optional.empty();
     }
+
+    /**
+     * GET /matches
+     * Return all matches
+     *
+     * @return Successfully returned a list of matches (status code 200)
+     */
+    @ApiOperation(value = "", nickname = "getAllMatches", notes = "Return all matches", response = Match.class, responseContainer = "List", tags={  })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Successfully returned a list of matches", response = Match.class, responseContainer = "List") })
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/matches",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<List<Match>> getAllMatches() {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
 
     /**
      * POST /matches

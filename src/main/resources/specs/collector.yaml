@@ -77,6 +77,18 @@ paths:
               schema:
                 type: string
                 format: uuid
+    get:
+      operationId: getAllMatches
+      description: Return all matches
+      responses:
+        '200':
+          description: Successfully returned a list of matches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Match'
 
 components:
   schemas:
@@ -115,3 +127,9 @@ components:
           type: string
         place:
           type: integer
+    Match:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid

@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
 /**
  * MatchResult
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-10-02T20:37:05.876957300+06:00[Asia/Almaty]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-10-02T22:38:59.113612700+06:00[Asia/Almaty]")
 public class MatchResult   {
   @JsonProperty("playersWithPlaces")
   @Valid

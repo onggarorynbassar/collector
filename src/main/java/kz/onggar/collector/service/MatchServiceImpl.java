@@ -3,6 +3,8 @@ package kz.onggar.collector.service;
 
 import kz.onggar.collector.entity.MatchEntity;
 import kz.onggar.collector.entity.PlayerPlaceEntity;
+import kz.onggar.collector.mapper.MatchMapper;
+import kz.onggar.collector.openapi.dto.Match;
 import kz.onggar.collector.openapi.dto.MatchResult;
 import kz.onggar.collector.openapi.dto.PlayerWithPlace;
 import kz.onggar.collector.repository.MatchRepository;
@@ -10,6 +12,8 @@ import kz.onggar.collector.repository.PlayerPlaceRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MatchServiceImpl implements MatchService {
@@ -50,5 +54,14 @@ public class MatchServiceImpl implements MatchService {
 
             matchEntity.getPlayerPlaces().add(savedPlayerPlaceEntity);
         }
+    }
+
+    @Override
+    @Transactional
+    public List<Match> getAllMatches() {
+        return matchRepository.findAll()
+                .stream()
+                .map(MatchMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

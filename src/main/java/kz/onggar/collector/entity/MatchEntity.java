@@ -28,4 +28,8 @@ public class MatchEntity {
     public void setPlayerPlaces(List<PlayerPlaceEntity> playerPlaces) {
         this.playerPlaces = playerPlaces;
     }
+
+    public UUID getId() {
+        return id;
+    }
 }
