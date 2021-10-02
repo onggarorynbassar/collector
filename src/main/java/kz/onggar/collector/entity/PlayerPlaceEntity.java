@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "collector", name = "match")
+@Table(schema = "collector", name = "player_place")
 public class PlayerPlaceEntity {
 
     @Id
@@ -12,8 +12,15 @@ public class PlayerPlaceEntity {
     private UUID id;
 
     @OneToOne
-    @JoinColumn(name = "player_id")
     private PlayerEntity player;
 
     private int place;
+
+    public void setPlayer(PlayerEntity player) {
+        this.player = player;
+    }
+
+    public void setPlace(int place) {
+        this.place = place;
+    }
 }

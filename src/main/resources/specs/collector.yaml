@@ -1,0 +1,135 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Collector API
+  description: Collector API
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /players:
+    get:
+      operationId: getAllPlayers
+      description: Return all players
+      responses:
+        '200':
+          description: Successfully returned a list of players
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Player'
+    post:
+      operationId: createNewPlayer
+      description: Create new player
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Player'
+      responses:
+        '200':
+          description: Successfully created a new player
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        '406':
+          description: Player with given steamId exists
+  /players/{id}:
+    get:
+      operationId: getPlayerById
+      description: Get player by id
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully returned a player
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        '404':
+          description: Player not found
+  /matches:
+    post:
+      operationId: saveMatchResults
+      description: Save match results
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchResult'
+      responses:
+        '200':
+          description: Successfully saved match results
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+    get:
+      operationId: getAllMatches
+      description: Return all matches
+      responses:
+        '200':
+          description: Successfully returned a list of matches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Match'
+
+components:
+  schemas:
+    Player:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        steamId:
+          type: string
+        simpleMmr:
+          type: integer
+        competitiveMmr:
+          type: integer
+        relativeMmr:
+          type: integer
+    PlayerWithPlace:
+      type: object
+      properties:
+        playerId:
+          type: string
+          format: uuid
+        steamId:
+          type: string
+        place:
+          type: integer
+    MatchResult:
+      type: object
+      properties:
+        playersWithPlaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayerWithPlace'
+        steamId:
+          type: string
+        place:
+          type: integer
+    Match:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid

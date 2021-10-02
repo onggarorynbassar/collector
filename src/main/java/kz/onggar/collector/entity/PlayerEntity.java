@@ -14,12 +14,46 @@ public class PlayerEntity {
     @Column(nullable = false)
     private String steamId;
 
-    private int simpleMmr;
+    private int simpleRating;
 
-    private int competitiveMmr;
+    private int competitiveRating;
 
-    private int relativeMmr;
+    private int relativeRating;
 
-    @OneToOne(mappedBy = "player")
-    private PlayerPlaceEntity playerPlace;
+    public UUID getId() {
+        return id;
+    }
+
+    public String getSteamId() {
+        return steamId;
+    }
+
+    public void setSteamId(String steamId) {
+        this.steamId = steamId;
+    }
+
+    public int getSimpleRating() {
+        return simpleRating;
+    }
+
+    public void setSimpleRating(int simpleMmr) {
+        this.simpleRating = simpleMmr;
+    }
+
+    public int getCompetitiveRating() {
+        return competitiveRating;
+    }
+
+    public void setCompetitiveRating(int competitiveMmr) {
+        this.competitiveRating = competitiveMmr;
+    }
+
+    public int getRelativeRating() {
+        return relativeRating;
+    }
+
+    public void setRelativeRating(int relativeMmr) {
+        this.relativeRating = relativeMmr;
+    }
+
 }
