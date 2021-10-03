@@ -37,4 +37,4 @@ out/
 .vscode/
 
 .openapi-generator
-/openapi/
+openapi/
