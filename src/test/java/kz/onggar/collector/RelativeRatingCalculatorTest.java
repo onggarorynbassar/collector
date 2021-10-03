@@ -1,4 +1,4 @@
-package kz.onggar.collector.unit.service;
+package kz.onggar.collector;
 
 import kz.onggar.collector.component.LobbyPlayerCount;
 import kz.onggar.collector.service.RelativeRatingCalculator;

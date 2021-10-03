@@ -3,8 +3,8 @@ package kz.onggar.collector.controller;
 import kz.onggar.collector.openapi.api.PlayersApi;
 import kz.onggar.collector.openapi.dto.Player;
 import kz.onggar.collector.service.PlayerService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,9 +20,9 @@ public class PlayerController implements PlayersApi {
     }
 
     @Override
-    public ResponseEntity<Player> createNewPlayer(@RequestBody Player player) {
+    public ResponseEntity<Player> createNewPlayer(Player player) {
         var savedPlayer = playerService.createPlayer(player);
-        return ResponseEntity.ok(savedPlayer);
+        return new ResponseEntity<>(savedPlayer, HttpStatus.CREATED);
     }
 
     @Override
