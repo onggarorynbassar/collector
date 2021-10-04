@@ -37,7 +37,8 @@ openApiGenerate {
     modelPackage = "kz.onggar.collector.openapi.dto"
     configOptions = [
             dateLibrary: "java8",
-            interfaceOnly: "true"
+            interfaceOnly: "true",
+            hideGenerationTimestamp: "true"
     ]
     generateApiDocumentation = false
     generateModelDocumentation = false
