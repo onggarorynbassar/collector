@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
 
-import static kz.onggar.collector.player.TestHelper.*;
+import static kz.onggar.collector.util.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,13 +33,17 @@ class PlayerTest {
         player.competitiveMmr(1000);
     }
 
-    @Test
-    @Transactional
-    void createNewUserTest() throws Exception {
-        var createdPlayer = transformResponseToObject(
+    private Player createTestPlayer() throws Exception {
+        return transformResponseToObject(
                 makePostRequest(mvc, "/players", player, status().isCreated()),
                 Player.class
         );
+    }
+
+    @Test
+    @Transactional
+    void createNewUserTest() throws Exception {
+        var createdPlayer = createTestPlayer();
 
         assertAll("check created player",
                 () -> assertNotNull(createdPlayer.getId()),
@@ -53,10 +57,7 @@ class PlayerTest {
     @Test
     @Transactional
     void getAllPlayers() throws Exception {
-        var createdPlayer = transformResponseToObject(
-                makePostRequest(mvc, "/players", player, status().isCreated()),
-                Player.class
-        );
+        var createdPlayer = createTestPlayer();
 
         var players = transformResponseToList(
                 makeGetRequest(mvc, "/players"),
@@ -69,10 +70,7 @@ class PlayerTest {
     @Test
     @Transactional
     void getPlayerById() throws Exception {
-        var createdPlayer = transformResponseToObject(
-                makePostRequest(mvc, "/players", player, status().isCreated()),
-                Player.class
-        );
+        var createdPlayer = createTestPlayer();
 
         var player = transformResponseToObject(
                 makeGetRequest(mvc, "/players/" + createdPlayer.getId()),

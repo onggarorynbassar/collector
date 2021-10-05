@@ -33,7 +33,7 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     @Transactional
-    public void saveMatchResult(MatchResult matchResult) {
+    public Match saveMatchResult(MatchResult matchResult) {
         MatchEntity matchEntity = matchRepository.save(new MatchEntity());
 
         var playersWithPlaces = matchResult.getPlayersWithPlaces();
@@ -54,6 +54,8 @@ public class MatchServiceImpl implements MatchService {
 
             matchEntity.getPlayerPlaces().add(savedPlayerPlaceEntity);
         }
+
+        return MatchMapper.toDto(matchEntity);
     }
 
     @Override

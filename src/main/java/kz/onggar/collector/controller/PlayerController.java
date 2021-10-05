@@ -34,4 +34,9 @@ public class PlayerController implements PlayersApi {
     public ResponseEntity<Player> getPlayerById(UUID id) {
         return ResponseEntity.ok(playerService.getPlayerById(id));
     }
+
+    @Override
+    public ResponseEntity<Player> getPlayerBySteamId(String steamId) {
+        return ResponseEntity.ok(playerService.getPlayerBySteamId(steamId));
+    }
 }

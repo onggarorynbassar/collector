@@ -7,7 +7,6 @@ package kz.onggar.collector.openapi.api;
 
 import kz.onggar.collector.openapi.dto.Match;
 import kz.onggar.collector.openapi.dto.MatchResult;
-import java.util.UUID;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -50,7 +49,7 @@ public interface MatchesApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
+                    String exampleString = "{ \"playersWithPlaces\" : [ { \"steamId\" : \"steamId\", \"place\" : 0, \"playerId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"steamId\" : \"steamId\", \"place\" : 0, \"playerId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ], \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -68,16 +67,25 @@ public interface MatchesApi {
      * @param matchResult  (required)
      * @return Successfully saved match results (status code 200)
      */
-    @ApiOperation(value = "", nickname = "saveMatchResults", notes = "Save match results", response = UUID.class, tags={  })
+    @ApiOperation(value = "", nickname = "saveMatchResults", notes = "Save match results", response = Match.class, tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successfully saved match results", response = UUID.class) })
+        @ApiResponse(code = 200, message = "Successfully saved match results", response = Match.class) })
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/matches",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<UUID> saveMatchResults(@ApiParam(value = "" ,required=true )  @Valid @RequestBody MatchResult matchResult) {
+    default ResponseEntity<Match> saveMatchResults(@ApiParam(value = "" ,required=true )  @Valid @RequestBody MatchResult matchResult) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"playersWithPlaces\" : [ { \"steamId\" : \"steamId\", \"place\" : 0, \"playerId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"steamId\" : \"steamId\", \"place\" : 0, \"playerId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ], \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

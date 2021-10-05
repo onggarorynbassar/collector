@@ -59,6 +59,23 @@ paths:
                 $ref: '#/components/schemas/Player'
         '404':
           description: Player not found
+  /players/steamId/{steamId}:
+    get:
+      operationId: getPlayerBySteamId
+      description: Get player by steam id
+      parameters:
+        - in: path
+          required: true
+          name: steamId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully returned a player by steam id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
   /matches:
     post:
       operationId: saveMatchResults
@@ -75,8 +92,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
-                format: uuid
+                $ref: '#/components/schemas/Match'
     get:
       operationId: getAllMatches
       description: Return all matches
@@ -123,13 +139,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PlayerWithPlace'
-        steamId:
-          type: string
-        place:
-          type: integer
     Match:
       type: object
       properties:
         id:
           type: string
           format: uuid
+        playersWithPlaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayerWithPlace'

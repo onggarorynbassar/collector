@@ -17,4 +17,6 @@ public interface PlayerService {
     PlayerEntity createNewPlayer(String steamId);
 
     List<Player> getAllPlayers();
+
+    Player getPlayerBySteamId(String steamId);
 }

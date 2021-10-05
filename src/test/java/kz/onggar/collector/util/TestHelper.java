@@ -1,4 +1,4 @@
-package kz.onggar.collector.player;
+package kz.onggar.collector.util;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,18 +12,18 @@ import java.util.List;
 
 public class TestHelper {
 
-    public static <T> T transformResponseToObject(ResultActions request, Class<T> clazz) throws Exception {
+    public static <T> T transformResponseToObject(ResultActions resultAction, Class<T> clazz) throws Exception {
         return new ObjectMapper().readValue(
-                request.andReturn().getResponse().getContentAsString(), clazz
+                resultAction.andReturn().getResponse().getContentAsString(), clazz
         );
     }
 
-    public static <T> List<T> transformResponseToList(ResultActions request, Class<T> clazz) throws Exception {
+    public static <T> List<T> transformResponseToList(ResultActions resultAction, Class<T> clazz) throws Exception {
         var mapper = new ObjectMapper();
         JavaType type = mapper.getTypeFactory().constructCollectionType(List.class, clazz);
 
         return mapper.readValue(
-                request.andReturn().getResponse().getContentAsString(), type
+                resultAction.andReturn().getResponse().getContentAsString(), type
         );
     }
 
@@ -37,19 +37,19 @@ public class TestHelper {
 
     public static ResultActions makePostRequest(MockMvc mvc, String uriTemplate, Object content, ResultMatcher status) throws Exception {
         return mvc.perform(MockMvcRequestBuilders
-                        .post(uriTemplate)
-                        .content(asJsonString(content))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                .post(uriTemplate)
+                .content(asJsonString(content))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status);
     }
 
     public static ResultActions makeGetRequest(MockMvc mvc, String uriTemplate, Object content, ResultMatcher status) throws Exception {
         return mvc.perform(MockMvcRequestBuilders
-                        .get(uriTemplate)
-                        .content(asJsonString(content))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                .get(uriTemplate)
+                .content(asJsonString(content))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status);
     }
 

@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import kz.onggar.collector.openapi.dto.PlayerWithPlace;
 import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -17,6 +20,10 @@ import javax.validation.constraints.*;
 public class Match   {
   @JsonProperty("id")
   private UUID id;
+
+  @JsonProperty("playersWithPlaces")
+  @Valid
+  private List<PlayerWithPlace> playersWithPlaces = null;
 
   public Match id(UUID id) {
     this.id = id;
@@ -39,6 +46,35 @@ public class Match   {
     this.id = id;
   }
 
+  public Match playersWithPlaces(List<PlayerWithPlace> playersWithPlaces) {
+    this.playersWithPlaces = playersWithPlaces;
+    return this;
+  }
+
+  public Match addPlayersWithPlacesItem(PlayerWithPlace playersWithPlacesItem) {
+    if (this.playersWithPlaces == null) {
+      this.playersWithPlaces = new ArrayList<>();
+    }
+    this.playersWithPlaces.add(playersWithPlacesItem);
+    return this;
+  }
+
+  /**
+   * Get playersWithPlaces
+   * @return playersWithPlaces
+  */
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public List<PlayerWithPlace> getPlayersWithPlaces() {
+    return playersWithPlaces;
+  }
+
+  public void setPlayersWithPlaces(List<PlayerWithPlace> playersWithPlaces) {
+    this.playersWithPlaces = playersWithPlaces;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -49,12 +85,13 @@ public class Match   {
       return false;
     }
     Match match = (Match) o;
-    return Objects.equals(this.id, match.id);
+    return Objects.equals(this.id, match.id) &&
+        Objects.equals(this.playersWithPlaces, match.playersWithPlaces);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(id, playersWithPlaces);
   }
 
   @Override
@@ -63,6 +100,7 @@ public class Match   {
     sb.append("class Match {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    playersWithPlaces: ").append(toIndentedString(playersWithPlaces)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -124,4 +124,34 @@ public interface PlayersApi {
 
     }
 
+
+    /**
+     * GET /players/steamId/{steamId}
+     * Get player by steam id
+     *
+     * @param steamId  (required)
+     * @return Successfully returned a player by steam id (status code 200)
+     */
+    @ApiOperation(value = "", nickname = "getPlayerBySteamId", notes = "Get player by steam id", response = Player.class, tags={  })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Successfully returned a player by steam id", response = Player.class) })
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/players/steamId/{steamId}",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<Player> getPlayerBySteamId(@ApiParam(value = "",required=true) @PathVariable("steamId") String steamId) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"steamId\" : \"steamId\", \"simpleMmr\" : 0, \"competitiveMmr\" : 6, \"relativeMmr\" : 1, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
 }
