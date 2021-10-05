@@ -40,6 +40,17 @@ class PlayerTest {
         );
     }
 
+    private void createConflictPlayer() throws Exception {
+        makePostRequest(mvc, "/players", player, status().isConflict());
+    }
+
+    @Test
+    @Transactional
+    void createNonUniquePlayerShouldThrow() throws Exception {
+        createTestPlayer();
+        createConflictPlayer();
+    }
+
     @Test
     @Transactional
     void createNewUserTest() throws Exception {

@@ -44,15 +44,6 @@ public class TestHelper {
                 .andExpect(status);
     }
 
-    public static ResultActions makeGetRequest(MockMvc mvc, String uriTemplate, Object content, ResultMatcher status) throws Exception {
-        return mvc.perform(MockMvcRequestBuilders
-                .get(uriTemplate)
-                .content(asJsonString(content))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status);
-    }
-
     public static ResultActions makeGetRequest(MockMvc mvc, String uriTemplate) throws Exception {
         return mvc.perform(MockMvcRequestBuilders
                 .get(uriTemplate)

@@ -1,7 +1,8 @@
 package kz.onggar.collector.service;
 
-import kz.onggar.collector.component.LobbyPlayerCount;
+import kz.onggar.collector.component.LobbyType;
 import kz.onggar.collector.configuration.RelativeRatingConfiguration;
+import kz.onggar.collector.exception.UnexpectedExecutionStateException;
 import org.springframework.stereotype.Service;
 
 
@@ -13,12 +14,12 @@ public class RelativeRatingCalculatorImpl implements RelativeRatingCalculator {
         this.relativeRatingConfiguration = relativeRatingConfiguration;
     }
 
-    public int calculateNewRank(int playerCurrentRating, int averageOtherPlayersRating, int place, LobbyPlayerCount playersCount) {
-        double placeMultiplier = getPlaceMultiplier(place, playersCount);
+    public int calculateNewRank(int playerCurrentRating, int averageOtherPlayersRating, int place, LobbyType lobbyType) {
+        double placeMultiplier = getPlaceMultiplier(place, lobbyType);
         double maxRating = relativeRatingConfiguration.getMax();
-        boolean isWinningPlace = isWinningPlace(place, playersCount);
+        boolean isWinningPlace = isWinningPlace(place, lobbyType);
 
-        if (playersCount == LobbyPlayerCount.COMMON) {
+        if (lobbyType == LobbyType.COMMON) {
             double topLimit, diffModifier;
 
             if (isWinningPlace) {
@@ -32,23 +33,23 @@ public class RelativeRatingCalculatorImpl implements RelativeRatingCalculator {
             var newRating = playerCurrentRating + (topLimit * diffModifier * placeMultiplier);
             return (int) Math.round(newRating);
         } else {
-            throw new IllegalArgumentException("Unexpected lobby player count");
+            throw new UnexpectedExecutionStateException("Unexpected lobby type. type:[%s]".formatted(lobbyType));
         }
     }
 
-    private double getPlaceMultiplier(int place, LobbyPlayerCount playerCount) {
-        if (playerCount == LobbyPlayerCount.COMMON) {
-            return relativeRatingConfiguration.getScoreDistribution().get(LobbyPlayerCount.COMMON.name()).get(place);
+    private double getPlaceMultiplier(int place, LobbyType lobbyType) {
+        if (lobbyType == LobbyType.COMMON) {
+            return relativeRatingConfiguration.getScoreDistribution().get(LobbyType.COMMON.name()).get(place);
         } else {
-            throw new IllegalArgumentException("Unexpected place");
+            throw new UnexpectedExecutionStateException("Unexpected place. place:[%s] should be around [1-8]".formatted(place));
         }
     }
 
-    private boolean isWinningPlace(int place, LobbyPlayerCount playerCount) {
-        if (playerCount == LobbyPlayerCount.COMMON) {
+    private boolean isWinningPlace(int place, LobbyType lobbyType) {
+        if (lobbyType == LobbyType.COMMON) {
             return place < 5;
         } else {
-            throw new IllegalArgumentException("Unexpected place");
+            throw new UnexpectedExecutionStateException("Unexpected place. place:[%s] should be around [1-8]".formatted(place));
         }
     }
 

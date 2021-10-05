@@ -9,7 +9,9 @@ import java.util.UUID;
 
 @Repository
 public interface PlayerRepository extends JpaRepository<PlayerEntity, UUID> {
-    Optional<PlayerEntity> findPlayerEntityBySteamId(String steamId);
+    Optional<PlayerEntity> findBySteamId(String steamId);
+
+    boolean existsBySteamId(String steamId);
 }
 
 

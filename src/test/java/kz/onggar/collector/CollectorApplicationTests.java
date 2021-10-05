@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static kz.onggar.collector.component.LobbyPlayerCount.COMMON;
+import static kz.onggar.collector.component.LobbyType.COMMON;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest

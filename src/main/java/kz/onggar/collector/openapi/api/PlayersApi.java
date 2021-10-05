@@ -5,6 +5,7 @@
  */
 package kz.onggar.collector.openapi.api;
 
+import kz.onggar.collector.openapi.dto.Error;
 import kz.onggar.collector.openapi.dto.Player;
 import java.util.UUID;
 import io.swagger.annotations.*;
@@ -42,7 +43,7 @@ public interface PlayersApi {
     @ApiOperation(value = "", nickname = "createNewPlayer", notes = "Create new player", response = Player.class, tags={  })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Successfully created a new player", response = Player.class),
-        @ApiResponse(code = 406, message = "Player with given steamId exists") })
+        @ApiResponse(code = 406, message = "Player with given steamId exists", response = Error.class) })
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/players",
@@ -104,7 +105,7 @@ public interface PlayersApi {
     @ApiOperation(value = "", nickname = "getPlayerById", notes = "Get player by id", response = Player.class, tags={  })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Successfully returned a player", response = Player.class),
-        @ApiResponse(code = 404, message = "Player not found") })
+        @ApiResponse(code = 404, message = "Player not found", response = Error.class) })
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/players/{id}",
@@ -131,10 +132,12 @@ public interface PlayersApi {
      *
      * @param steamId  (required)
      * @return Successfully returned a player by steam id (status code 200)
+     *         or Player not found (status code 404)
      */
     @ApiOperation(value = "", nickname = "getPlayerBySteamId", notes = "Get player by steam id", response = Player.class, tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successfully returned a player by steam id", response = Player.class) })
+        @ApiResponse(code = 200, message = "Successfully returned a player by steam id", response = Player.class),
+        @ApiResponse(code = 404, message = "Player not found", response = Error.class) })
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/players/steamId/{steamId}",

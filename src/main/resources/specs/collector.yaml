@@ -39,6 +39,10 @@ paths:
                 $ref: '#/components/schemas/Player'
         '406':
           description: Player with given steamId exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /players/{id}:
     get:
       operationId: getPlayerById
@@ -59,6 +63,10 @@ paths:
                 $ref: '#/components/schemas/Player'
         '404':
           description: Player not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /players/steamId/{steamId}:
     get:
       operationId: getPlayerBySteamId
@@ -76,6 +84,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Player'
+        '404':
+          description: Player not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /matches:
     post:
       operationId: saveMatchResults
@@ -108,6 +122,18 @@ paths:
 
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        time:
+          type: string
+          format: date-time
+        shortMessage:
+          description: developer defined error message
+          type: string
+        message:
+          description: java error message and stacktrace
+          type: string
     Player:
       type: object
       properties:
