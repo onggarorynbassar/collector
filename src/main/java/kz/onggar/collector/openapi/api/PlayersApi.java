@@ -5,6 +5,7 @@
  */
 package kz.onggar.collector.openapi.api;
 
+import kz.onggar.collector.openapi.dto.Error;
 import kz.onggar.collector.openapi.dto.Player;
 import java.util.UUID;
 import io.swagger.annotations.*;
@@ -22,7 +23,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-10-02T22:38:59.113612700+06:00[Asia/Almaty]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @Validated
 @Api(value = "players", description = "the players API")
 public interface PlayersApi {
@@ -42,7 +43,7 @@ public interface PlayersApi {
     @ApiOperation(value = "", nickname = "createNewPlayer", notes = "Create new player", response = Player.class, tags={  })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Successfully created a new player", response = Player.class),
-        @ApiResponse(code = 406, message = "Player with given steamId exists") })
+        @ApiResponse(code = 406, message = "Player with given steamId exists", response = Error.class) })
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/players",
@@ -104,13 +105,45 @@ public interface PlayersApi {
     @ApiOperation(value = "", nickname = "getPlayerById", notes = "Get player by id", response = Player.class, tags={  })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Successfully returned a player", response = Player.class),
-        @ApiResponse(code = 404, message = "Player not found") })
+        @ApiResponse(code = 404, message = "Player not found", response = Error.class) })
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/players/{id}",
         produces = { "application/json" }
     )
     default ResponseEntity<Player> getPlayerById(@ApiParam(value = "",required=true) @PathVariable("id") UUID id) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"steamId\" : \"steamId\", \"simpleMmr\" : 0, \"competitiveMmr\" : 6, \"relativeMmr\" : 1, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /players/steamId/{steamId}
+     * Get player by steam id
+     *
+     * @param steamId  (required)
+     * @return Successfully returned a player by steam id (status code 200)
+     *         or Player not found (status code 404)
+     */
+    @ApiOperation(value = "", nickname = "getPlayerBySteamId", notes = "Get player by steam id", response = Player.class, tags={  })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Successfully returned a player by steam id", response = Player.class),
+        @ApiResponse(code = 404, message = "Player not found", response = Error.class) })
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/players/steamId/{steamId}",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<Player> getPlayerBySteamId(@ApiParam(value = "",required=true) @PathVariable("steamId") String steamId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

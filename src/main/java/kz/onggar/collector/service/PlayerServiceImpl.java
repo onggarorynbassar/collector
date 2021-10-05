@@ -1,6 +1,8 @@
 package kz.onggar.collector.service;
 
 import kz.onggar.collector.entity.PlayerEntity;
+import kz.onggar.collector.exception.AlreadyExistException;
+import kz.onggar.collector.exception.ResourceNotFoundException;
 import kz.onggar.collector.mapper.PlayerMapper;
 import kz.onggar.collector.openapi.dto.Player;
 import kz.onggar.collector.repository.PlayerRepository;
@@ -22,11 +24,9 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     @Transactional
     public Player createPlayer(Player player) {
-        PlayerEntity playerEntity = new PlayerEntity();
-        playerEntity.setSteamId(player.getSteamId());
-        playerEntity.setCompetitiveRating(player.getCompetitiveMmr());
-        playerEntity.setRelativeRating(player.getRelativeMmr());
-        playerEntity.setSimpleRating(player.getSimpleMmr());
+        checkIfPlayerWithSteamIdExists(player.getSteamId());
+
+        var playerEntity = PlayerMapper.fromDto(player);
         PlayerEntity savedEntity = playerRepository.save(playerEntity);
         return PlayerMapper.toDto(savedEntity);
     }
@@ -34,23 +34,22 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     @Transactional
     public PlayerEntity getPlayerEntityById(UUID id) {
-        return playerRepository.findById(id).orElseThrow(RuntimeException::new);
+        return playerRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Player with id=[%s] not found".formatted(id))
+        );
     }
 
     @Override
     public Player getPlayerById(UUID id) {
         return PlayerMapper.toDto(
-                playerRepository
-                        .findById(id)
-                        .orElseThrow(RuntimeException::new)
+                getPlayerEntityById(id)
         );
     }
 
     @Override
     @Transactional
     public PlayerEntity createNewPlayer(String steamId) {
-        var playerEntity = new PlayerEntity();
-        playerEntity.setSteamId(steamId);
+        var playerEntity = PlayerMapper.getPlayerEntityFromSteamId(steamId);
         return playerRepository.save(playerEntity);
     }
 
@@ -58,5 +57,24 @@ public class PlayerServiceImpl implements PlayerService {
     @Transactional
     public List<Player> getAllPlayers() {
         return playerRepository.findAll().stream().map(PlayerMapper::toDto).toList();
+    }
+
+    @Override
+    @Transactional
+    public Player getPlayerBySteamId(String steamId) {
+        return PlayerMapper.toDto(
+                playerRepository
+                        .findBySteamId(steamId)
+                        .orElseThrow(RuntimeException::new)
+        );
+    }
+
+    /**
+     * Use inside @Transactional method
+     */
+    private void checkIfPlayerWithSteamIdExists(String steamId) {
+        if (playerRepository.existsBySteamId(steamId)) {
+            throw new AlreadyExistException("player with steamId:[%s] exists".formatted(steamId));
+        }
     }
 }

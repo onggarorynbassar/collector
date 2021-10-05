@@ -1,6 +1,6 @@
 package kz.onggar.collector.component;
 
-public enum LobbyPlayerCount {
+public enum LobbyType {
     /**
      * 8 player lobby
      */
