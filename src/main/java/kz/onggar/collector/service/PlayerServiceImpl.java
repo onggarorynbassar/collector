@@ -40,6 +40,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
+    @Transactional
     public Player getPlayerById(UUID id) {
         return PlayerMapper.toDto(
                 getPlayerEntityById(id)
