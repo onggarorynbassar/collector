@@ -8,7 +8,7 @@ import kz.onggar.collector.openapi.dto.Player;
 import kz.onggar.collector.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +32,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public PlayerEntity getPlayerEntityById(UUID id) {
         return playerRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Player with id=[%s] not found".formatted(id))
@@ -40,7 +40,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Player getPlayerById(UUID id) {
         return PlayerMapper.toDto(
                 getPlayerEntityById(id)
@@ -55,13 +55,13 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Player> getAllPlayers() {
         return playerRepository.findAll().stream().map(PlayerMapper::toDto).toList();
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Player getPlayerBySteamId(String steamId) {
         return PlayerMapper.toDto(
                 playerRepository

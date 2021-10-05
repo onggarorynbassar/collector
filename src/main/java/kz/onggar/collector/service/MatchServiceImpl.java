@@ -10,8 +10,7 @@ import kz.onggar.collector.openapi.dto.PlayerWithPlace;
 import kz.onggar.collector.repository.MatchRepository;
 import kz.onggar.collector.repository.PlayerPlaceRepository;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,7 +58,7 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Match> getAllMatches() {
         return matchRepository.findAll()
                 .stream()
