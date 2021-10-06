@@ -1,0 +1,1 @@
+db_url: "jdbc:postgresql://host.minikube.internal:5432/fb"
