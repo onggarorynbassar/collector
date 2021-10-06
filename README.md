@@ -16,7 +16,7 @@ Fraction battle collector service
 
 ### build image and run inside minikube
 
-1. run: `minikube start --vm-driver=hyperv`
+1. run: `minikube start --vm-driver=docker`
 2. run: `minikube docker-env; minikube -p minikube docker-env | Invoke-Expression`
 3. run: `./gradlew jibDockerBuild`
 
