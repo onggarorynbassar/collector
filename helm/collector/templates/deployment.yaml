@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collector-deployment
+  labels:
+    app: collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: collector
+  template:
+    metadata:
+      labels:
+        app: collector
+    spec:
+      containers:
+        - name: collector
+          imagePullPolicy: IfNotPresent
+          image: collector:0.0.1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_URL
+              value: {{ .Values.db_url }}
