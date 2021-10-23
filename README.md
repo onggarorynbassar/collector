@@ -25,4 +25,4 @@ Fraction battle collector service
 1. locate yourself inside helm directory: `cd helm`
 2. install chart: `helm install collector ./collector`
    to upgrade: `helm upgrade collector ./collector`
-   to delete: `helm upgrade collector`
+   to delete: `helm delete collector`
