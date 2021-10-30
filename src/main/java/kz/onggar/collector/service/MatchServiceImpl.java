@@ -41,17 +41,17 @@ public class MatchServiceImpl implements MatchService {
             PlayerPlaceEntity playerPlaceEntity = new PlayerPlaceEntity();
             if (playerWithPlace.getPlayerId() != null) {
                 var foundPlayer = playerService.getPlayerEntityById(playerWithPlace.getPlayerId());
-                playerPlaceEntity.setPlayer(foundPlayer);
+                playerPlaceEntity.player(foundPlayer);
             } else {
                 var savedNewPlayer = playerService.createNewPlayer(playerWithPlace.getSteamId());
-                playerPlaceEntity.setPlayer(savedNewPlayer);
+                playerPlaceEntity.player(savedNewPlayer);
 
             }
-            playerPlaceEntity.setPlace(playerWithPlace.getPlace());
+            playerPlaceEntity.place(playerWithPlace.getPlace());
 
             var savedPlayerPlaceEntity = playerPlaceRepository.save(playerPlaceEntity);
 
-            matchEntity.getPlayerPlaces().add(savedPlayerPlaceEntity);
+            matchEntity.playerPlaces().add(savedPlayerPlaceEntity);
         }
 
         return MatchMapper.toDto(matchEntity);

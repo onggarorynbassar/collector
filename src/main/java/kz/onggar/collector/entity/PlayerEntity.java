@@ -1,10 +1,19 @@
 package kz.onggar.collector.entity;
 
+import lombok.*;
+import lombok.experimental.Accessors;
+
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Table(schema = "collector", name = "player")
+@Accessors(fluent = true)
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PlayerEntity {
 
     @Id
@@ -19,41 +28,4 @@ public class PlayerEntity {
     private int competitiveRating;
 
     private int relativeRating;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getSteamId() {
-        return steamId;
-    }
-
-    public void setSteamId(String steamId) {
-        this.steamId = steamId;
-    }
-
-    public int getSimpleRating() {
-        return simpleRating;
-    }
-
-    public void setSimpleRating(int simpleMmr) {
-        this.simpleRating = simpleMmr;
-    }
-
-    public int getCompetitiveRating() {
-        return competitiveRating;
-    }
-
-    public void setCompetitiveRating(int competitiveMmr) {
-        this.competitiveRating = competitiveMmr;
-    }
-
-    public int getRelativeRating() {
-        return relativeRating;
-    }
-
-    public void setRelativeRating(int relativeMmr) {
-        this.relativeRating = relativeMmr;
-    }
-
 }

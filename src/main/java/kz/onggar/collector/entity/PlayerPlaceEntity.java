@@ -1,10 +1,16 @@
 package kz.onggar.collector.entity;
 
+import lombok.*;
+import lombok.experimental.Accessors;
+
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Table(schema = "collector", name = "player_place")
+@Accessors(fluent = true)
+@Getter
+@Setter
 public class PlayerPlaceEntity {
 
     @Id
@@ -15,12 +21,4 @@ public class PlayerPlaceEntity {
     private PlayerEntity player;
 
     private int place;
-
-    public void setPlayer(PlayerEntity player) {
-        this.player = player;
-    }
-
-    public void setPlace(int place) {
-        this.place = place;
-    }
 }

@@ -1,5 +1,8 @@
 package kz.onggar.collector.entity;
 
+import lombok.*;
+import lombok.experimental.Accessors;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +10,9 @@ import java.util.UUID;
 
 @Entity
 @Table(schema = "collector", name = "match")
+@Accessors(fluent = true)
+@Getter
+@Setter
 public class MatchEntity {
 
     @Id
@@ -20,16 +26,4 @@ public class MatchEntity {
             joinColumns = {@JoinColumn(name = "match_id")},
             inverseJoinColumns = {@JoinColumn(name = "player_place_id")})
     private List<PlayerPlaceEntity> playerPlaces = new ArrayList<>();
-
-    public List<PlayerPlaceEntity> getPlayerPlaces() {
-        return playerPlaces;
-    }
-
-    public void setPlayerPlaces(List<PlayerPlaceEntity> playerPlaces) {
-        this.playerPlaces = playerPlaces;
-    }
-
-    public UUID getId() {
-        return id;
-    }
 }
