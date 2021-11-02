@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.0.0
+  version: 1.1.0
   title: Collector API
   description: Collector API
 
@@ -8,118 +8,39 @@ servers:
   - url: http://localhost:8080
 
 paths:
-  /players:
-    get:
-      operationId: getAllPlayers
-      description: Return all players
+  /matches:
+    post:
+      operationId: saveMatch
+      description: save info about started match
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Match'
+                - $ref: '#/components/schemas/MatchStart'
       responses:
         '200':
-          description: Successfully returned a list of players
+          description: match start info saved
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Player'
-    post:
-      operationId: createNewPlayer
-      description: Create new player
+    put:
+      operationId: updateMatch
+      description: update info about started match
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Player'
+              $ref: '#/components/schemas/MatchUpdate'
       responses:
         '200':
-          description: Successfully created a new player
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Player'
-        '406':
-          description: Player with given steamId exists
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /players/{id}:
-    get:
-      operationId: getPlayerById
-      description: Get player by id
-      parameters:
-        - in: path
-          required: true
-          name: id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Successfully returned a player
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Player'
-        '404':
-          description: Player not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /players/steamId/{steamId}:
-    get:
-      operationId: getPlayerBySteamId
-      description: Get player by steam id
-      parameters:
-        - in: path
-          required: true
-          name: steamId
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successfully returned a player by steam id
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Player'
-        '404':
-          description: Player not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /matches:
-    post:
-      operationId: saveMatchResults
-      description: Save match results
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MatchResult'
-      responses:
-        '200':
-          description: Successfully saved match results
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Match'
-    get:
-      operationId: getAllMatches
-      description: Return all matches
-      responses:
-        '200':
-          description: Successfully returned a list of matches
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Match'
-
+          description: match update info saved
 components:
   schemas:
     Error:
@@ -134,6 +55,26 @@ components:
         message:
           description: java error message and stacktrace
           type: string
+    Match:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+    MatchStart:
+      type: object
+      properties:
+        playersSteamId:
+          type: array
+          items:
+            properties:
+              steamId:
+                type: string
+    MatchUpdate:
+      type: object
+      properties:
+        players:
+          type: object
     Player:
       type: object
       properties:
@@ -148,30 +89,27 @@ components:
           type: integer
         relativeMmr:
           type: integer
-    PlayerWithPlace:
+        settings:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayerSetting'
+        npcAlibitySets:
+          type: array
+          items:
+            $ref: '#/components/schemas/NpcAbilitySet'
+    PlayerSetting:
       type: object
       properties:
-        playerId:
+        name:
           type: string
-          format: uuid
-        steamId:
-          type: string
-        place:
+        value:
           type: integer
-    MatchResult:
+    NpcAbilitySet:
       type: object
       properties:
-        playersWithPlaces:
-          type: array
-          items:
-            $ref: '#/components/schemas/PlayerWithPlace'
-    Match:
-      type: object
-      properties:
-        id:
+        npcName:
           type: string
-          format: uuid
-        playersWithPlaces:
+        options:
           type: array
           items:
-            $ref: '#/components/schemas/PlayerWithPlace'
+            type: integer
