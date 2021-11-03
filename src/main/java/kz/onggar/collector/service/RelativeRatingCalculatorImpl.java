@@ -14,7 +14,7 @@ public class RelativeRatingCalculatorImpl implements RelativeRatingCalculator {
         this.relativeRatingConfiguration = relativeRatingConfiguration;
     }
 
-    public int calculateNewRank(int playerCurrentRating, int averageOtherPlayersRating, int place, LobbyType lobbyType) {
+    public int calculateNewRank(int UserCurrentRating, int averageOtherUsersRating, int place, LobbyType lobbyType) {
         double placeMultiplier = getPlaceMultiplier(place, lobbyType);
         double maxRating = relativeRatingConfiguration.getMax();
         boolean isWinningPlace = isWinningPlace(place, lobbyType);
@@ -23,14 +23,14 @@ public class RelativeRatingCalculatorImpl implements RelativeRatingCalculator {
             double topLimit, diffModifier;
 
             if (isWinningPlace) {
-                topLimit = calculateTopLimit(playerCurrentRating, true);
-                diffModifier = ((maxRating - (playerCurrentRating - averageOtherPlayersRating)) / maxRating);
+                topLimit = calculateTopLimit(UserCurrentRating, true);
+                diffModifier = ((maxRating - (UserCurrentRating - averageOtherUsersRating)) / maxRating);
             } else {
-                topLimit = calculateTopLimit(playerCurrentRating, false);
-                diffModifier = ((maxRating + (playerCurrentRating - averageOtherPlayersRating)) / maxRating);
+                topLimit = calculateTopLimit(UserCurrentRating, false);
+                diffModifier = ((maxRating + (UserCurrentRating - averageOtherUsersRating)) / maxRating);
             }
 
-            var newRating = playerCurrentRating + (topLimit * diffModifier * placeMultiplier);
+            var newRating = UserCurrentRating + (topLimit * diffModifier * placeMultiplier);
             return (int) Math.round(newRating);
         } else {
             throw new UnexpectedExecutionStateException("Unexpected lobby type. type:[%s]".formatted(lobbyType));

@@ -1,21 +1,21 @@
 package kz.onggar.collector.match;
 
-import kz.onggar.collector.openapi.dto.Match;
-import kz.onggar.collector.openapi.dto.MatchResult;
-import kz.onggar.collector.openapi.dto.Player;
-import kz.onggar.collector.openapi.dto.PlayerWithPlace;
+import kz.onggar.collector.openapi.dto.MatchStart;
+import kz.onggar.collector.openapi.dto.SteamIds;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
-import static kz.onggar.collector.util.TestHelper.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static kz.onggar.collector.util.TestHelper.makePostRequest;
+import static kz.onggar.collector.util.TestHelper.transformResponseToObject;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,44 +26,29 @@ class MatchTest {
     @Autowired
     private MockMvc mvc;
 
-    private MatchResult matchResult;
-
-    private Player player;
-
     @BeforeEach
     void init() {
-        player = new Player();
-        player.steamId("t1");
-        player.relativeMmr(1000);
-        player.simpleMmr(1000);
-        player.competitiveMmr(1000);
     }
-
 
     @Test
     @Transactional
     void saveMatchResultTest() throws Exception {
-        matchResult = new MatchResult();
-        var mockPlayerWithPlace = new PlayerWithPlace();
-        mockPlayerWithPlace.setPlace(4);
-        mockPlayerWithPlace.setPlayerId(null);
-        mockPlayerWithPlace.setSteamId("testSteamId");
 
-        matchResult.setPlayersWithPlaces(List.of(mockPlayerWithPlace));
+        var steamIds = new SteamIds();
+        var steamIdTestValues = List.of("t1", "t2", "t3", "t4", "t5");
 
-        var createdMatch = transformResponseToObject(
-                makePostRequest(mvc, "/matches", matchResult, status().isCreated()),
-                Match.class
-        );
+        steamIds.setSteamIds(steamIdTestValues);
 
-        var maybeCreatedPlayer = transformResponseToObject(
-                makeGetRequest(mvc, "/players/steamId/" + mockPlayerWithPlace.getSteamId()), Player.class
+        var startedMatch = transformResponseToObject(
+                makePostRequest(mvc, "/matches", steamIds, status().is2xxSuccessful()),
+                MatchStart.class
         );
 
         assertAll("check that match have been created",
-                () -> assertNotNull(createdMatch),
-                () -> assertNotNull(createdMatch.getId()),
-                () -> assertEquals(mockPlayerWithPlace.getSteamId(), maybeCreatedPlayer.getSteamId())
+                () -> assertNotNull(startedMatch),
+                () -> assertNotNull(startedMatch.getUsers()),
+                () -> assertNotNull(startedMatch.getMatch())
+
         );
     }
 }

@@ -5,61 +5,61 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.UUID;
+import kz.onggar.collector.openapi.dto.UserMatchStatus;
 import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Match
+ * MatchUpdate
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-public class Match   {
-  @JsonProperty("id")
-  private UUID id;
+public class MatchUpdate   {
+  @JsonProperty("UserMatchStatus")
+  private UserMatchStatus userMatchStatus;
 
-  @JsonProperty("currentWave")
-  private Integer currentWave;
+  @JsonProperty("wave")
+  private Integer wave;
 
-  public Match id(UUID id) {
-    this.id = id;
+  public MatchUpdate userMatchStatus(UserMatchStatus userMatchStatus) {
+    this.userMatchStatus = userMatchStatus;
     return this;
   }
 
   /**
-   * Get id
-   * @return id
+   * Get userMatchStatus
+   * @return userMatchStatus
   */
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public UUID getId() {
-    return id;
+  public UserMatchStatus getUserMatchStatus() {
+    return userMatchStatus;
   }
 
-  public void setId(UUID id) {
-    this.id = id;
+  public void setUserMatchStatus(UserMatchStatus userMatchStatus) {
+    this.userMatchStatus = userMatchStatus;
   }
 
-  public Match currentWave(Integer currentWave) {
-    this.currentWave = currentWave;
+  public MatchUpdate wave(Integer wave) {
+    this.wave = wave;
     return this;
   }
 
   /**
-   * Get currentWave
-   * @return currentWave
+   * Get wave
+   * @return wave
   */
   @ApiModelProperty(value = "")
 
 
-  public Integer getCurrentWave() {
-    return currentWave;
+  public Integer getWave() {
+    return wave;
   }
 
-  public void setCurrentWave(Integer currentWave) {
-    this.currentWave = currentWave;
+  public void setWave(Integer wave) {
+    this.wave = wave;
   }
 
 
@@ -71,23 +71,23 @@ public class Match   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Match match = (Match) o;
-    return Objects.equals(this.id, match.id) &&
-        Objects.equals(this.currentWave, match.currentWave);
+    MatchUpdate matchUpdate = (MatchUpdate) o;
+    return Objects.equals(this.userMatchStatus, matchUpdate.userMatchStatus) &&
+        Objects.equals(this.wave, matchUpdate.wave);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, currentWave);
+    return Objects.hash(userMatchStatus, wave);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Match {\n");
+    sb.append("class MatchUpdate {\n");
     
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    currentWave: ").append(toIndentedString(currentWave)).append("\n");
+    sb.append("    userMatchStatus: ").append(toIndentedString(userMatchStatus)).append("\n");
+    sb.append("    wave: ").append(toIndentedString(wave)).append("\n");
     sb.append("}");
     return sb.toString();
   }

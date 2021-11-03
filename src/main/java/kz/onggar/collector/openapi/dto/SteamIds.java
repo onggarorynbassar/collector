@@ -7,47 +7,45 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
-import kz.onggar.collector.openapi.dto.PlayerWithPlace;
 import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * MatchResult
+ * SteamIds
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-public class MatchResult   {
-  @JsonProperty("playersWithPlaces")
+public class SteamIds   {
+  @JsonProperty("steamIds")
   @Valid
-  private List<PlayerWithPlace> playersWithPlaces = null;
+  private List<String> steamIds = null;
 
-  public MatchResult playersWithPlaces(List<PlayerWithPlace> playersWithPlaces) {
-    this.playersWithPlaces = playersWithPlaces;
+  public SteamIds steamIds(List<String> steamIds) {
+    this.steamIds = steamIds;
     return this;
   }
 
-  public MatchResult addPlayersWithPlacesItem(PlayerWithPlace playersWithPlacesItem) {
-    if (this.playersWithPlaces == null) {
-      this.playersWithPlaces = new ArrayList<>();
+  public SteamIds addSteamIdsItem(String steamIdsItem) {
+    if (this.steamIds == null) {
+      this.steamIds = new ArrayList<>();
     }
-    this.playersWithPlaces.add(playersWithPlacesItem);
+    this.steamIds.add(steamIdsItem);
     return this;
   }
 
   /**
-   * Get playersWithPlaces
-   * @return playersWithPlaces
+   * Get steamIds
+   * @return steamIds
   */
   @ApiModelProperty(value = "")
 
-  @Valid
 
-  public List<PlayerWithPlace> getPlayersWithPlaces() {
-    return playersWithPlaces;
+  public List<String> getSteamIds() {
+    return steamIds;
   }
 
-  public void setPlayersWithPlaces(List<PlayerWithPlace> playersWithPlaces) {
-    this.playersWithPlaces = playersWithPlaces;
+  public void setSteamIds(List<String> steamIds) {
+    this.steamIds = steamIds;
   }
 
 
@@ -59,21 +57,21 @@ public class MatchResult   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    MatchResult matchResult = (MatchResult) o;
-    return Objects.equals(this.playersWithPlaces, matchResult.playersWithPlaces);
+    SteamIds steamIds = (SteamIds) o;
+    return Objects.equals(this.steamIds, steamIds.steamIds);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(playersWithPlaces);
+    return Objects.hash(steamIds);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class MatchResult {\n");
+    sb.append("class SteamIds {\n");
     
-    sb.append("    playersWithPlaces: ").append(toIndentedString(playersWithPlaces)).append("\n");
+    sb.append("    steamIds: ").append(toIndentedString(steamIds)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -19,11 +19,4 @@ public class MatchEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToMany
-    @JoinTable(
-            schema = "collector",
-            name = "match_history",
-            joinColumns = {@JoinColumn(name = "match_id")},
-            inverseJoinColumns = {@JoinColumn(name = "player_place_id")})
-    private List<PlayerPlaceEntity> playerPlaces = new ArrayList<>();
 }

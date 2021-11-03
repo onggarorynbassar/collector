@@ -5,61 +5,59 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Match
+ * Mercenary
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-public class Match   {
-  @JsonProperty("id")
-  private UUID id;
+public class Mercenary   {
+  @JsonProperty("name")
+  private String name;
 
-  @JsonProperty("currentWave")
-  private Integer currentWave;
+  @JsonProperty("count")
+  private Integer count;
 
-  public Match id(UUID id) {
-    this.id = id;
+  public Mercenary name(String name) {
+    this.name = name;
     return this;
   }
 
   /**
-   * Get id
-   * @return id
+   * Get name
+   * @return name
   */
   @ApiModelProperty(value = "")
 
-  @Valid
 
-  public UUID getId() {
-    return id;
+  public String getName() {
+    return name;
   }
 
-  public void setId(UUID id) {
-    this.id = id;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public Match currentWave(Integer currentWave) {
-    this.currentWave = currentWave;
+  public Mercenary count(Integer count) {
+    this.count = count;
     return this;
   }
 
   /**
-   * Get currentWave
-   * @return currentWave
+   * Get count
+   * @return count
   */
   @ApiModelProperty(value = "")
 
 
-  public Integer getCurrentWave() {
-    return currentWave;
+  public Integer getCount() {
+    return count;
   }
 
-  public void setCurrentWave(Integer currentWave) {
-    this.currentWave = currentWave;
+  public void setCount(Integer count) {
+    this.count = count;
   }
 
 
@@ -71,23 +69,23 @@ public class Match   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Match match = (Match) o;
-    return Objects.equals(this.id, match.id) &&
-        Objects.equals(this.currentWave, match.currentWave);
+    Mercenary mercenary = (Mercenary) o;
+    return Objects.equals(this.name, mercenary.name) &&
+        Objects.equals(this.count, mercenary.count);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, currentWave);
+    return Objects.hash(name, count);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Match {\n");
+    sb.append("class Mercenary {\n");
     
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    currentWave: ").append(toIndentedString(currentWave)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    count: ").append(toIndentedString(count)).append("\n");
     sb.append("}");
     return sb.toString();
   }

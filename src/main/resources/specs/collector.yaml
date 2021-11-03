@@ -17,18 +17,14 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: '#/components/schemas/Match'
-                - $ref: '#/components/schemas/MatchStart'
+              $ref: '#/components/schemas/SteamIds'
       responses:
         '200':
           description: match start info saved
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Player'
+                $ref: '#/components/schemas/MatchStart'
     put:
       operationId: updateMatch
       description: update info about started match
@@ -61,21 +57,26 @@ components:
         id:
           type: string
           format: uuid
+        currentWave:
+          type: integer
     MatchStart:
       type: object
       properties:
-        playersSteamId:
+        match:
+          $ref: '#/components/schemas/Match'
+        Users:
           type: array
           items:
-            properties:
-              steamId:
-                type: string
+            $ref: '#/components/schemas/User'
+
     MatchUpdate:
       type: object
       properties:
-        players:
-          type: object
-    Player:
+        UserMatchStatus:
+          $ref: '#/components/schemas/UserMatchStatus'
+        wave:
+          type: integer
+    User:
       type: object
       properties:
         id:
@@ -92,12 +93,12 @@ components:
         settings:
           type: array
           items:
-            $ref: '#/components/schemas/PlayerSetting'
-        npcAlibitySets:
+            $ref: '#/components/schemas/UserSetting'
+        npcAbilitySets:
           type: array
           items:
             $ref: '#/components/schemas/NpcAbilitySet'
-    PlayerSetting:
+    UserSetting:
       type: object
       properties:
         name:
@@ -113,3 +114,52 @@ components:
           type: array
           items:
             type: integer
+    Defender:
+      type: object
+      properties:
+        name:
+          type: string
+        positionX:
+          type: integer
+        positionY:
+          type: integer
+    Mercenary:
+      type: object
+      properties:
+        name:
+          type: string
+        count:
+          type: integer
+    UserMatchStatus:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        alive:
+          type: boolean
+        defenders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Defender'
+        mercenaries:
+          type: object
+          items:
+            $ref: '#/components/schemas/Mercenary'
+        spells:
+          type: array
+          items:
+            properties:
+              name:
+                type: string
+        npcAbilityOption:
+          type: integer
+
+    SteamIds:
+      type: object
+      properties:
+        steamIds:
+          type: array
+          items:
+            type: string
+

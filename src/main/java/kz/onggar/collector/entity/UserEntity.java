@@ -7,14 +7,14 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "collector", name = "player")
+@Table(schema = "collector", name = "user")
 @Accessors(fluent = true)
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlayerEntity {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -25,6 +25,6 @@ class RelativeRatingCalculatorTest {
         assertEquals(9953, relativeRatingCalculator.calculateNewRank(10_000, 20_000, 7, LobbyType.COMMON));
         assertEquals(9933, relativeRatingCalculator.calculateNewRank(10_000, 20_000, 8, LobbyType.COMMON));
 
-        //TODO добавить еще тесты которые проверяют когда playerCurrentRating = 0, или когда avgOtherPlayersRating 30_000
+        //TODO добавить еще тесты которые проверяют когда UserCurrentRating = 0, или когда avgOtherUsersRating 30_000
     }
 }

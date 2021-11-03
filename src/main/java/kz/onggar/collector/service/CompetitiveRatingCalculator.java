@@ -17,9 +17,9 @@ public interface CompetitiveRatingCalculator {
      * за 7 место: -75<br>
      * за 8 место: -100<br>
      *
-     * @param playerCurrentRating       Текущий соревновательный рейтинг игрока, которому мы высчитываем новый рейтинг<br><br>
+     * @param UserCurrentRating       Текущий соревновательный рейтинг игрока, которому мы высчитываем новый рейтинг<br><br>
      * @param place                     Место игрока которому высчитываем новый соревновательный рейтинг. Обычно от 1(лучший) до 8(последний)<br><br>
      * @param lobbyType              количество игроков в лобби<br><br>
      */
-    int calculateNewRank(int playerCurrentRating, int place, LobbyType lobbyType);
+    int calculateNewRank(int UserCurrentRating, int place, LobbyType lobbyType);
 }
