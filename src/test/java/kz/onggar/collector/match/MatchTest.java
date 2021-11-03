@@ -14,8 +14,7 @@ import java.util.List;
 
 import static kz.onggar.collector.util.TestHelper.makePostRequest;
 import static kz.onggar.collector.util.TestHelper.transformResponseToObject;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,29 +25,37 @@ class MatchTest {
     @Autowired
     private MockMvc mvc;
 
-    @BeforeEach
-    void init() {
+    @Test
+    @Transactional
+    void startMatchWithSinglePlayer() throws Exception {
+        var steamIds = new SteamIds();
+        steamIds.setSteamIds(List.of("testUser"));
+
+        var startMatch = transformResponseToObject(
+                makePostRequest(mvc, "/matches", steamIds, status().isOk()), MatchStart.class
+        );
+
+        assertAll("start match with known player",
+                () -> assertNotNull(startMatch.getMatch()),
+                () -> assertNotNull(startMatch.getUsers()),
+                () -> assertTrue(startMatch.getUsers().stream().allMatch(user -> steamIds.getSteamIds().contains(user.getSteamId())))
+        );
     }
 
     @Test
     @Transactional
-    void saveMatchResultTest() throws Exception {
-
+    void startMatchTest() throws Exception {
         var steamIds = new SteamIds();
-        var steamIdTestValues = List.of("t1", "t2", "t3", "t4", "t5");
+        steamIds.setSteamIds(List.of("a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8"));
 
-        steamIds.setSteamIds(steamIdTestValues);
-
-        var startedMatch = transformResponseToObject(
-                makePostRequest(mvc, "/matches", steamIds, status().is2xxSuccessful()),
-                MatchStart.class
+        var startMatch = transformResponseToObject(
+                makePostRequest(mvc, "/matches", steamIds, status().isOk()), MatchStart.class
         );
 
-        assertAll("check that match have been created",
-                () -> assertNotNull(startedMatch),
-                () -> assertNotNull(startedMatch.getUsers()),
-                () -> assertNotNull(startedMatch.getMatch())
-
+        assertAll("start match with new players",
+                () -> assertNotNull(startMatch.getMatch()),
+                () -> assertNotNull(startMatch.getUsers()),
+                () -> assertTrue(startMatch.getUsers().stream().allMatch(user -> steamIds.getSteamIds().contains(user.getSteamId())))
         );
     }
 }

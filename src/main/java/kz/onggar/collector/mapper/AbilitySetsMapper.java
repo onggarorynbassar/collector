@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 public class AbilitySetsMapper {
     public static List<NpcAbilitySet> toDto(List<NpcAbilitySetEntity> npcAbilitySets) {
+
         return npcAbilitySets
                 .stream()
                 .collect(

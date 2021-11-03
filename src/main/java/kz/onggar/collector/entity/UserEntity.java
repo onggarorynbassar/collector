@@ -13,8 +13,6 @@ import java.util.UUID;
 @Accessors(fluent = true)
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class UserEntity {
 
@@ -36,9 +34,10 @@ public class UserEntity {
 
     @ManyToMany()
     @JoinTable(
+            schema = "collector",
             name = "user_npc_ability_override",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "npc_ability_set_id")}
     )
-    private List<NpcAbilitySetEntity> npcAbilitySets;
+    private List<NpcAbilitySetEntity> npcAbilitySets = new ArrayList<>();
 }

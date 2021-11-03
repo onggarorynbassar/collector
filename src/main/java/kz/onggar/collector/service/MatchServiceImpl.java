@@ -45,8 +45,6 @@ public class MatchServiceImpl implements MatchService {
         var startedMatchDto = new Match();
         startedMatchDto.setId(startedMatch.id());
 
-
-
         var matchStart = new MatchStart();
         matchStart.setMatch(startedMatchDto);
         matchStart.setUsers(users);
