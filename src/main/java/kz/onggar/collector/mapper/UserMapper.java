@@ -3,6 +3,8 @@ package kz.onggar.collector.mapper;
 import kz.onggar.collector.entity.UserEntity;
 import kz.onggar.collector.openapi.dto.User;
 
+import java.util.stream.Collectors;
+
 public class UserMapper {
     public static User toDto(UserEntity userEntity) {
         return new User()
@@ -10,6 +12,8 @@ public class UserMapper {
                 .competitiveMmr(userEntity.competitiveRating())
                 .relativeMmr(userEntity.relativeRating())
                 .simpleMmr(userEntity.simpleRating())
+                .settings(userEntity.settings().stream().map(SettingMapper::toDto).collect(Collectors.toList()))
+                .npcAbilitySets(userEntity.npcAbilitySets().stream().map())
                 .id(userEntity.id());
     }
 

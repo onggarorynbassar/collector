@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -28,4 +30,15 @@ public class UserEntity {
     private int competitiveRating;
 
     private int relativeRating;
+
+    @OneToMany(mappedBy = "userEntity")
+    private List<UserSettingEntity> settings = new ArrayList<>();
+
+    @ManyToMany()
+    @JoinTable(
+            name = "user_npc_ability_override",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "npc_ability_set_id")}
+    )
+    private List<NpcAbilitySetEntity> npcAbilitySets;
 }

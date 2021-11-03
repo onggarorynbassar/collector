@@ -25,33 +25,12 @@ public class MatchServiceImpl implements MatchService {
         this.userRepository = userRepository;
     }
 
-    /**
-     * Получает SteamID
-     * Проверяет есть ил он в SteamID
-     * Если есть вытаскиваем
-     * Если нет то создать
-     * Вернуть в формате, в котором просят
-     */
     @Override
     @Transactional
     public MatchStart save(SteamIds ids) {
-        // Создаём образ MatchStart который будем наполнять
-        var matchStart = new MatchStart();
-
-        // Создаём новый матч
         var startedMatch = matchRepository.save(new MatchEntity());
-        var startedMatchDto = new Match();
 
-        // Используем DTO, т.к мы получили объект из БД, ставим айдишник
-        startedMatchDto.setId(startedMatch.id());
-
-        // Лист в котором хранятся все игроки, найденные и не найденные все лежат тут
         List<User> users = new ArrayList<>();
-
-        /*
-        Проходимся по списку steamId, ищем есть ли такой игрок в нашей БД, если есть просто переводим в DTO
-        полученное из бд значение. Иначе создаём и так же переводим в DTO
-        */
 
         for (String steamId : ids.getSteamIds()) {
             var foundUser = userRepository.findBySteamId(steamId);
@@ -63,6 +42,12 @@ public class MatchServiceImpl implements MatchService {
                 users.add(UserMapper.toDto(foundUser.get()));
             }
         }
+        var startedMatchDto = new Match();
+        startedMatchDto.setId(startedMatch.id());
+
+
+
+        var matchStart = new MatchStart();
         matchStart.setMatch(startedMatchDto);
         matchStart.setUsers(users);
 
