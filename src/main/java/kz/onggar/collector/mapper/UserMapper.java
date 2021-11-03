@@ -13,7 +13,7 @@ public class UserMapper {
                 .relativeMmr(userEntity.relativeRating())
                 .simpleMmr(userEntity.simpleRating())
                 .settings(userEntity.settings().stream().map(SettingMapper::toDto).collect(Collectors.toList()))
-                .npcAbilitySets(userEntity.npcAbilitySets().stream().map())
+                .npcAbilitySets(AbilitySetsMapper.toDto(userEntity.npcAbilitySets()))
                 .id(userEntity.id());
     }
 
