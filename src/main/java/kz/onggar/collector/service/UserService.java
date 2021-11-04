@@ -8,15 +8,17 @@ import java.util.UUID;
 
 public interface UserService {
 
-    User createUser(User User);
+    UserEntity createUser(String steamId);
 
-    UserEntity getUserEntityById(UUID id);
-
-    User getUserById(UUID id);
-
-    UserEntity createNewUser(String steamId);
-
-    List<User> getAllUsers();
-
-    User getUserBySteamId(String steamId);
+//    User createUser(User User);
+//
+//    UserEntity getUserEntityById(UUID id);
+//
+//    User getUserById(UUID id);
+//
+//    UserEntity createNewUser(String steamId);
+//
+//    List<User> getAllUsers();
+//
+//    User getUserBySteamId(String steamId);
 }
