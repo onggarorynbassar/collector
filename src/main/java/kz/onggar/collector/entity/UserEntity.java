@@ -1,6 +1,8 @@
 package kz.onggar.collector.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -29,10 +31,10 @@ public class UserEntity {
 
     private int relativeRating;
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
     private List<UserSettingEntity> settings = new ArrayList<>();
 
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(
             schema = "collector",
             name = "user_npc_ability_override",

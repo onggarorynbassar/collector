@@ -23,8 +23,9 @@ class MatchTest extends AbstractTest {
     @Test
     @Transactional
     void startMatchWithSinglePlayer() throws Exception {
+        createTestUser();
         var steamIds = new SteamIds();
-        steamIds.setSteamIds(List.of("testUser"));
+        steamIds.setSteamIds(List.of(TEST_USER_STEAM_ID));
 
         var startMatch = transformResponseToObject(
                 makePostRequest(mvc, "/matches", steamIds, status().isOk()), MatchStart.class
@@ -40,8 +41,9 @@ class MatchTest extends AbstractTest {
     @Test
     @Transactional
     void startMatchTest() throws Exception {
+        createTestUser();
         var steamIds = new SteamIds();
-        steamIds.setSteamIds(List.of("a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8"));
+        steamIds.setSteamIds(List.of("a1", "a2", TEST_USER_STEAM_ID, "a4", "a5", "a6", "a7", "a8"));
 
         var startMatch = transformResponseToObject(
                 makePostRequest(mvc, "/matches", steamIds, status().isOk()), MatchStart.class

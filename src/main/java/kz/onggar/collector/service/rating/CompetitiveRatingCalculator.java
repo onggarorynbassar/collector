@@ -1,4 +1,4 @@
-package kz.onggar.collector.service;
+package kz.onggar.collector.service.rating;
 
 import kz.onggar.collector.component.LobbyType;
 

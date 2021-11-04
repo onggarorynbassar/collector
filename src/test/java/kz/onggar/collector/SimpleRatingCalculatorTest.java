@@ -1,7 +1,7 @@
 package kz.onggar.collector;
 
 import kz.onggar.collector.component.LobbyType;
-import kz.onggar.collector.service.SimpleRatingCalculator;
+import kz.onggar.collector.service.rating.SimpleRatingCalculator;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

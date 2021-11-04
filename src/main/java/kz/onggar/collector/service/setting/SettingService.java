@@ -1,4 +1,4 @@
-package kz.onggar.collector.service;
+package kz.onggar.collector.service.setting;
 
 import kz.onggar.collector.entity.SettingEntity;
 

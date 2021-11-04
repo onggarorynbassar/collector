@@ -1,4 +1,4 @@
-package kz.onggar.collector.service;
+package kz.onggar.collector.service.user;
 
 import kz.onggar.collector.entity.UserEntity;
 import kz.onggar.collector.openapi.dto.User;
