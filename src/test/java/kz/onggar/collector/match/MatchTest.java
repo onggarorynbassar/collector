@@ -48,7 +48,7 @@ class MatchTest extends AbstractTest {
         var userWithSettings = startMatch.getUsers()
                 .stream()
                 .filter((user) -> user.getSteamId().equals(TEST_USER_STEAM_ID))
-                .findFirst().orElse(new User());
+                .findFirst().orElseGet(User::new);
 
         assertAll("start match with new players",
                 () -> assertNotNull(startMatch.getMatch()),

@@ -24,6 +24,7 @@ public class MatchController implements MatchesApi {
 
     @Override
     public ResponseEntity<Void> updateMatch(@Valid MatchUpdate matchUpdate) {
-        return null;
+        matchService.update(matchUpdate);
+        return ResponseEntity.ok().build();
     }
 }

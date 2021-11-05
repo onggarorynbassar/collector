@@ -10,8 +10,8 @@ import kz.onggar.collector.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MatchServiceImpl implements MatchService {
@@ -28,28 +28,20 @@ public class MatchServiceImpl implements MatchService {
     @Override
     @Transactional
     public MatchStart save(SteamIds ids) {
-        var startedMatch = matchRepository.save(new MatchEntity());
+        var newMatch = matchRepository.save(new MatchEntity());
 
-        List<User> users = new ArrayList<>();
+        List<User> foundOrCreatedUsers = ids.getSteamIds()
+                .stream()
+                .map(steamId ->
+                        userRepository.findBySteamId(steamId)
+                                .orElseGet(() -> userRepository.save(new UserEntity().steamId(steamId)))
+                )
+                .map(UserMapper::toDto)
+                .collect(Collectors.toList());
 
-        for (String steamId : ids.getSteamIds()) {
-            var foundUser = userRepository.findBySteamId(steamId);
-
-            if (foundUser.isEmpty()) {
-                var savedUser = userRepository.save(new UserEntity().steamId(steamId));
-                users.add(UserMapper.toDto(savedUser));
-            } else {
-                users.add(UserMapper.toDto(foundUser.get()));
-            }
-        }
-        var startedMatchDto = new Match();
-        startedMatchDto.setId(startedMatch.id());
-
-        var matchStart = new MatchStart();
-        matchStart.setMatch(startedMatchDto);
-        matchStart.setUsers(users);
-
-        return matchStart;
+        return new MatchStart()
+                .match(new Match().id(newMatch.id()))
+                .users(foundOrCreatedUsers);
     }
 
     @Override
@@ -57,39 +49,4 @@ public class MatchServiceImpl implements MatchService {
     public void update(MatchUpdate matchUpdate) {
 
     }
-//    @Override
-//    @Transactional
-//    public Match saveMatchResult(MatchResult matchResult) {
-//        MatchEntity matchEntity = matchRepository.save(new MatchEntity());
-//
-//        var UsersWithPlaces = matchResult.getUsersWithPlaces();
-//
-//        for (UserWithPlace UserWithPlace : UsersWithPlaces) {
-//            UserPlaceEntity UserPlaceEntity = new UserPlaceEntity();
-//            if (UserWithPlace.getUserId() != null) {
-//                var foundUser = UserService.getUserEntityById(UserWithPlace.getUserId());
-//                UserPlaceEntity.User(foundUser);
-//            } else {
-//                var savedNewUser = UserService.createNewUser(UserWithPlace.getSteamId());
-//                UserPlaceEntity.User(savedNewUser);
-//
-//            }
-//            UserPlaceEntity.place(UserWithPlace.getPlace());
-//
-//            var savedUserPlaceEntity = UserPlaceRepository.save(UserPlaceEntity);
-//
-//            matchEntity.UserPlaces().add(savedUserPlaceEntity);
-//        }
-//
-//        return MatchMapper.toDto(matchEntity);
-//    }
-//
-//    @Override
-//    @Transactional(readOnly = true)
-//    public List<Match> getAllMatches() {
-//        return matchRepository.findAll()
-//                .stream()
-//                .map(MatchMapper::toDto)
-//                .collect(Collectors.toList());
-//    }
 }
