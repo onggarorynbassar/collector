@@ -1,11 +1,10 @@
 package kz.onggar.collector.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,4 +18,5 @@ public class MatchEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    int currentWave = 1;
 }
