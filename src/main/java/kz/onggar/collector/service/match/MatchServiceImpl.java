@@ -58,6 +58,6 @@ public class MatchServiceImpl implements MatchService {
     public void update(MatchUpdate matchUpdate) {
         var matchEntity = getMatchEntity(matchUpdate.getUserMatchStatus().getId());
         matchEntity.currentWave(matchUpdate.getWave());
-        
+        matchRepository.save(matchEntity);
     }
 }

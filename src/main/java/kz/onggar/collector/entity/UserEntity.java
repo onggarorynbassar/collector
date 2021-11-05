@@ -42,4 +42,6 @@ public class UserEntity {
             inverseJoinColumns = {@JoinColumn(name = "npc_ability_set_id")}
     )
     private List<NpcAbilitySetEntity> npcAbilitySets = new ArrayList<>();
+
+
 }
