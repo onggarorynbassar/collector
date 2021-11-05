@@ -1,0 +1,16 @@
+MatchStart:
+  type: object
+  properties:
+    match:
+      $ref: 'Match.yaml#/Match'
+    Users:
+      type: array
+      items:
+        $ref: 'User.yaml#/User'
+SteamIds:
+  type: object
+  properties:
+    steamIds:
+      type: array
+      items:
+        type: string

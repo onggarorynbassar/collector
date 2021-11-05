@@ -1,0 +1,9 @@
+NpcAbilitySet:
+  type: object
+  properties:
+    npcName:
+      type: string
+    options:
+      type: array
+      items:
+        type: integer

@@ -17,18 +17,14 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: '#/components/schemas/Match'
-                - $ref: '#/components/schemas/MatchStart'
+              $ref: 'components/MatchStart.yaml#/SteamIds'
       responses:
         '200':
           description: match start info saved
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Player'
+                $ref: 'components/MatchStart.yaml#/MatchStart'
     put:
       operationId: updateMatch
       description: update info about started match
@@ -37,7 +33,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MatchUpdate'
+              $ref: 'components/MatchUpdate.yaml#/MatchUpdate'
       responses:
         '200':
           description: match update info saved
@@ -55,61 +51,3 @@ components:
         message:
           description: java error message and stacktrace
           type: string
-    Match:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-    MatchStart:
-      type: object
-      properties:
-        playersSteamId:
-          type: array
-          items:
-            properties:
-              steamId:
-                type: string
-    MatchUpdate:
-      type: object
-      properties:
-        players:
-          type: object
-    Player:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        steamId:
-          type: string
-        simpleMmr:
-          type: integer
-        competitiveMmr:
-          type: integer
-        relativeMmr:
-          type: integer
-        settings:
-          type: array
-          items:
-            $ref: '#/components/schemas/PlayerSetting'
-        npcAlibitySets:
-          type: array
-          items:
-            $ref: '#/components/schemas/NpcAbilitySet'
-    PlayerSetting:
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: integer
-    NpcAbilitySet:
-      type: object
-      properties:
-        npcName:
-          type: string
-        options:
-          type: array
-          items:
-            type: integer

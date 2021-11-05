@@ -1,69 +1,62 @@
 package kz.onggar.collector.match;
 
-import kz.onggar.collector.openapi.dto.Match;
-import kz.onggar.collector.openapi.dto.MatchResult;
-import kz.onggar.collector.openapi.dto.Player;
-import kz.onggar.collector.openapi.dto.PlayerWithPlace;
-import org.junit.jupiter.api.BeforeEach;
+import kz.onggar.collector.AbstractTest;
+import kz.onggar.collector.openapi.dto.MatchStart;
+import kz.onggar.collector.openapi.dto.SteamIds;
+import kz.onggar.collector.openapi.dto.User;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
-import static kz.onggar.collector.util.TestHelper.*;
+import static kz.onggar.collector.util.TestHelper.makePostRequest;
+import static kz.onggar.collector.util.TestHelper.transformResponseToObject;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = DEFINED_PORT)
-@AutoConfigureMockMvc
-class MatchTest {
-
-    @Autowired
-    private MockMvc mvc;
-
-    private MatchResult matchResult;
-
-    private Player player;
-
-    @BeforeEach
-    void init() {
-        player = new Player();
-        player.steamId("t1");
-        player.relativeMmr(1000);
-        player.simpleMmr(1000);
-        player.competitiveMmr(1000);
-    }
-
+class MatchTest extends AbstractTest {
 
     @Test
     @Transactional
-    void saveMatchResultTest() throws Exception {
-        matchResult = new MatchResult();
-        var mockPlayerWithPlace = new PlayerWithPlace();
-        mockPlayerWithPlace.setPlace(4);
-        mockPlayerWithPlace.setPlayerId(null);
-        mockPlayerWithPlace.setSteamId("testSteamId");
+    void startMatchWithSinglePlayer() throws Exception {
+        createTestUserWithSettingsAndAbilitySets(TEST_USER_STEAM_ID);
+        var steamIds = new SteamIds();
+        steamIds.setSteamIds(List.of(TEST_USER_STEAM_ID));
 
-        matchResult.setPlayersWithPlaces(List.of(mockPlayerWithPlace));
-
-        var createdMatch = transformResponseToObject(
-                makePostRequest(mvc, "/matches", matchResult, status().isCreated()),
-                Match.class
+        var startMatch = transformResponseToObject(
+                makePostRequest(mvc, "/matches", steamIds, status().isOk()), MatchStart.class
         );
 
-        var maybeCreatedPlayer = transformResponseToObject(
-                makeGetRequest(mvc, "/players/steamId/" + mockPlayerWithPlace.getSteamId()), Player.class
+        assertAll("start match with known player",
+                () -> assertNotNull(startMatch.getMatch()),
+                () -> assertNotNull(startMatch.getUsers()),
+                () -> assertTrue(startMatch.getUsers().stream().allMatch(user -> steamIds.getSteamIds().contains(user.getSteamId())))
+        );
+    }
+
+    @Test
+    @Transactional
+    void startMatchTest() throws Exception {
+        createTestUserWithSettingsAndAbilitySets(TEST_USER_STEAM_ID);
+        var steamIds = new SteamIds();
+        steamIds.setSteamIds(List.of("a1", "a2", TEST_USER_STEAM_ID, "a4", "a5", "a6", "a7", "a8"));
+
+        var startMatch = transformResponseToObject(
+                makePostRequest(mvc, "/matches", steamIds, status().isOk()), MatchStart.class
         );
 
-        assertAll("check that match have been created",
-                () -> assertNotNull(createdMatch),
-                () -> assertNotNull(createdMatch.getId()),
-                () -> assertEquals(mockPlayerWithPlace.getSteamId(), maybeCreatedPlayer.getSteamId())
+        var userWithSettings = startMatch.getUsers()
+                .stream()
+                .filter((user) -> user.getSteamId().equals(TEST_USER_STEAM_ID))
+                .findFirst().orElseGet(User::new);
+
+        assertAll("start match with new players",
+                () -> assertNotNull(startMatch.getMatch()),
+                () -> assertNotNull(startMatch.getUsers()),
+                () -> assertTrue(startMatch.getUsers().stream().allMatch(user -> steamIds.getSteamIds().contains(user.getSteamId()))),
+                () -> assertTrue(startMatch.getUsers().stream().allMatch(user -> user.getId() != null)),
+                () -> assertFalse(userWithSettings.getSettings().isEmpty()),
+                () -> assertFalse(userWithSettings.getNpcAbilitySets().isEmpty())
         );
     }
 }

@@ -1,14 +1,12 @@
 package kz.onggar.collector.controller;
 
 import kz.onggar.collector.openapi.api.MatchesApi;
-import kz.onggar.collector.openapi.dto.Match;
-import kz.onggar.collector.openapi.dto.MatchResult;
-import kz.onggar.collector.service.MatchService;
-import org.springframework.http.HttpStatus;
+import kz.onggar.collector.openapi.dto.*;
+import kz.onggar.collector.service.match.MatchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 public class MatchController implements MatchesApi {
@@ -20,12 +18,13 @@ public class MatchController implements MatchesApi {
     }
 
     @Override
-    public ResponseEntity<Match> saveMatchResults(MatchResult matchResult) {
-        return new ResponseEntity<>(matchService.saveMatchResult(matchResult), HttpStatus.CREATED);
+    public ResponseEntity<MatchStart> saveMatch(@Valid SteamIds steamIds) {
+        return ResponseEntity.ok(matchService.save(steamIds));
     }
 
     @Override
-    public ResponseEntity<List<Match>> getAllMatches() {
-        return ResponseEntity.ok(matchService.getAllMatches());
+    public ResponseEntity<Void> updateMatch(@Valid MatchUpdate matchUpdate) {
+        matchService.update(matchUpdate);
+        return ResponseEntity.ok().build();
     }
 }

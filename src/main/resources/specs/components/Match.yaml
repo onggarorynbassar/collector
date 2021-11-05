@@ -1,0 +1,8 @@
+Match:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+    currentWave:
+      type: integer

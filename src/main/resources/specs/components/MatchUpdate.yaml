@@ -1,0 +1,31 @@
+MatchUpdate:
+  type: object
+  properties:
+    userMatchStatus:
+      $ref: '#/UserMatchStatus'
+    wave:
+      type: integer
+UserMatchStatus:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+    alive:
+      type: boolean
+    defenders:
+      type: array
+      items:
+        $ref: 'Defender.yaml#/Defender'
+    mercenaries:
+      type: object
+      items:
+        $ref: 'Mercenary.yaml#/Mercenary'
+    spells:
+      type: array
+      items:
+        properties:
+          name:
+            type: string
+    npcAbilityOption:
+      type: integer

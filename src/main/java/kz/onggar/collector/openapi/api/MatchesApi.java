@@ -5,8 +5,9 @@
  */
 package kz.onggar.collector.openapi.api;
 
-import kz.onggar.collector.openapi.dto.Match;
-import kz.onggar.collector.openapi.dto.MatchResult;
+import kz.onggar.collector.openapi.dto.MatchStart;
+import kz.onggar.collector.openapi.dto.MatchUpdate;
+import kz.onggar.collector.openapi.dto.SteamIds;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,24 +33,26 @@ public interface MatchesApi {
     }
 
     /**
-     * GET /matches
-     * Return all matches
+     * POST /matches
+     * save info about started match
      *
-     * @return Successfully returned a list of matches (status code 200)
+     * @param steamIds  (required)
+     * @return match start info saved (status code 200)
      */
-    @ApiOperation(value = "", nickname = "getAllMatches", notes = "Return all matches", response = Match.class, responseContainer = "List", tags={  })
+    @ApiOperation(value = "", nickname = "saveMatch", notes = "save info about started match", response = MatchStart.class, tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successfully returned a list of matches", response = Match.class, responseContainer = "List") })
+        @ApiResponse(code = 200, message = "match start info saved", response = MatchStart.class) })
     @RequestMapping(
-        method = RequestMethod.GET,
+        method = RequestMethod.POST,
         value = "/matches",
-        produces = { "application/json" }
+        produces = { "application/json" },
+        consumes = { "application/json" }
     )
-    default ResponseEntity<List<Match>> getAllMatches() {
+    default ResponseEntity<MatchStart> saveMatch(@ApiParam(value = "" ,required=true )  @Valid @RequestBody SteamIds steamIds) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"playersWithPlaces\" : [ { \"steamId\" : \"steamId\", \"place\" : 0, \"playerId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"steamId\" : \"steamId\", \"place\" : 0, \"playerId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ], \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
+                    String exampleString = "{ \"match\" : { \"currentWave\" : 0, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, \"Users\" : [ { \"steamId\" : \"steamId\", \"simpleMmr\" : 6, \"settings\" : [ { \"name\" : \"name\", \"value\" : 5 }, { \"name\" : \"name\", \"value\" : 5 } ], \"competitiveMmr\" : 1, \"npcAbilitySets\" : [ { \"npcName\" : \"npcName\", \"options\" : [ 2, 2 ] }, { \"npcName\" : \"npcName\", \"options\" : [ 2, 2 ] } ], \"relativeMmr\" : 5, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"steamId\" : \"steamId\", \"simpleMmr\" : 6, \"settings\" : [ { \"name\" : \"name\", \"value\" : 5 }, { \"name\" : \"name\", \"value\" : 5 } ], \"competitiveMmr\" : 1, \"npcAbilitySets\" : [ { \"npcName\" : \"npcName\", \"options\" : [ 2, 2 ] }, { \"npcName\" : \"npcName\", \"options\" : [ 2, 2 ] } ], \"relativeMmr\" : 5, \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -61,31 +64,21 @@ public interface MatchesApi {
 
 
     /**
-     * POST /matches
-     * Save match results
+     * PUT /matches
+     * update info about started match
      *
-     * @param matchResult  (required)
-     * @return Successfully saved match results (status code 200)
+     * @param matchUpdate  (required)
+     * @return match update info saved (status code 200)
      */
-    @ApiOperation(value = "", nickname = "saveMatchResults", notes = "Save match results", response = Match.class, tags={  })
+    @ApiOperation(value = "", nickname = "updateMatch", notes = "update info about started match", tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successfully saved match results", response = Match.class) })
+        @ApiResponse(code = 200, message = "match update info saved") })
     @RequestMapping(
-        method = RequestMethod.POST,
+        method = RequestMethod.PUT,
         value = "/matches",
-        produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<Match> saveMatchResults(@ApiParam(value = "" ,required=true )  @Valid @RequestBody MatchResult matchResult) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"playersWithPlaces\" : [ { \"steamId\" : \"steamId\", \"place\" : 0, \"playerId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"steamId\" : \"steamId\", \"place\" : 0, \"playerId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ], \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
+    default ResponseEntity<Void> updateMatch(@ApiParam(value = "" ,required=true )  @Valid @RequestBody MatchUpdate matchUpdate) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

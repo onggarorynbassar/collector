@@ -1,22 +1,26 @@
 package kz.onggar.collector.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.UUID;
 
+
 @Entity
-@Table(schema = "collector", name = "match")
+@Table(schema = "collector", name = "settings")
 @Accessors(fluent = true)
 @Getter
 @Setter
-public class MatchEntity {
-
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class SettingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    int currentWave = 1;
+    @Column(nullable = false)
+    private String name;
 }

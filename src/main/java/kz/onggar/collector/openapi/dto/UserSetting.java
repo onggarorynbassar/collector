@@ -5,61 +5,59 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Match
+ * UserSetting
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-public class Match   {
-  @JsonProperty("id")
-  private UUID id;
+public class UserSetting   {
+  @JsonProperty("name")
+  private String name;
 
-  @JsonProperty("currentWave")
-  private Integer currentWave;
+  @JsonProperty("value")
+  private Integer value;
 
-  public Match id(UUID id) {
-    this.id = id;
+  public UserSetting name(String name) {
+    this.name = name;
     return this;
   }
 
   /**
-   * Get id
-   * @return id
+   * Get name
+   * @return name
   */
   @ApiModelProperty(value = "")
 
-  @Valid
 
-  public UUID getId() {
-    return id;
+  public String getName() {
+    return name;
   }
 
-  public void setId(UUID id) {
-    this.id = id;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public Match currentWave(Integer currentWave) {
-    this.currentWave = currentWave;
+  public UserSetting value(Integer value) {
+    this.value = value;
     return this;
   }
 
   /**
-   * Get currentWave
-   * @return currentWave
+   * Get value
+   * @return value
   */
   @ApiModelProperty(value = "")
 
 
-  public Integer getCurrentWave() {
-    return currentWave;
+  public Integer getValue() {
+    return value;
   }
 
-  public void setCurrentWave(Integer currentWave) {
-    this.currentWave = currentWave;
+  public void setValue(Integer value) {
+    this.value = value;
   }
 
 
@@ -71,23 +69,23 @@ public class Match   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Match match = (Match) o;
-    return Objects.equals(this.id, match.id) &&
-        Objects.equals(this.currentWave, match.currentWave);
+    UserSetting userSetting = (UserSetting) o;
+    return Objects.equals(this.name, userSetting.name) &&
+        Objects.equals(this.value, userSetting.value);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, currentWave);
+    return Objects.hash(name, value);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Match {\n");
+    sb.append("class UserSetting {\n");
     
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    currentWave: ").append(toIndentedString(currentWave)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("}");
     return sb.toString();
   }
