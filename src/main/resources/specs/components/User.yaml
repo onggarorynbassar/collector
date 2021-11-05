@@ -1,0 +1,29 @@
+User:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+    steamId:
+      type: string
+    simpleMmr:
+      type: integer
+    competitiveMmr:
+      type: integer
+    relativeMmr:
+      type: integer
+    settings:
+      type: array
+      items:
+        $ref: '#/UserSetting'
+    npcAbilitySets:
+      type: array
+      items:
+        $ref: 'NpcAbilitySet.yaml#/NpcAbilitySet'
+UserSetting:
+  type: object
+  properties:
+    name:
+      type: string
+    value:
+      type: integer

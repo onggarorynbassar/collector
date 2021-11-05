@@ -17,14 +17,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SteamIds'
+              $ref: 'components/MatchStart.yaml#/SteamIds'
       responses:
         '200':
           description: match start info saved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MatchStart'
+                $ref: 'components/MatchStart.yaml#/MatchStart'
     put:
       operationId: updateMatch
       description: update info about started match
@@ -33,7 +33,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MatchUpdate'
+              $ref: 'components/MatchUpdate.yaml#/MatchUpdate'
       responses:
         '200':
           description: match update info saved
@@ -51,115 +51,3 @@ components:
         message:
           description: java error message and stacktrace
           type: string
-    Match:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        currentWave:
-          type: integer
-    MatchStart:
-      type: object
-      properties:
-        match:
-          $ref: '#/components/schemas/Match'
-        Users:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-
-    MatchUpdate:
-      type: object
-      properties:
-        UserMatchStatus:
-          $ref: '#/components/schemas/UserMatchStatus'
-        wave:
-          type: integer
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        steamId:
-          type: string
-        simpleMmr:
-          type: integer
-        competitiveMmr:
-          type: integer
-        relativeMmr:
-          type: integer
-        settings:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserSetting'
-        npcAbilitySets:
-          type: array
-          items:
-            $ref: '#/components/schemas/NpcAbilitySet'
-    UserSetting:
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: integer
-    NpcAbilitySet:
-      type: object
-      properties:
-        npcName:
-          type: string
-        options:
-          type: array
-          items:
-            type: integer
-    Defender:
-      type: object
-      properties:
-        name:
-          type: string
-        positionX:
-          type: integer
-        positionY:
-          type: integer
-    Mercenary:
-      type: object
-      properties:
-        name:
-          type: string
-        count:
-          type: integer
-    UserMatchStatus:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        alive:
-          type: boolean
-        defenders:
-          type: array
-          items:
-            $ref: '#/components/schemas/Defender'
-        mercenaries:
-          type: object
-          items:
-            $ref: '#/components/schemas/Mercenary'
-        spells:
-          type: array
-          items:
-            properties:
-              name:
-                type: string
-        npcAbilityOption:
-          type: integer
-
-    SteamIds:
-      type: object
-      properties:
-        steamIds:
-          type: array
-          items:
-            type: string
-

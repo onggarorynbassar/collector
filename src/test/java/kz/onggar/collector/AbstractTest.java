@@ -3,13 +3,13 @@ package kz.onggar.collector;
 import kz.onggar.collector.entity.*;
 import kz.onggar.collector.repository.NpcAbilitySetRepository;
 import kz.onggar.collector.repository.UserRepository;
-import kz.onggar.collector.service.match.MatchService;
 import kz.onggar.collector.service.npc.NpcService;
 import kz.onggar.collector.service.setting.SettingService;
 import kz.onggar.collector.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -31,6 +31,9 @@ public class AbstractTest {
     public static final String TEST_NPC_NAME_3 = "dummy3";
 
     @Autowired
+    protected MockMvc mvc;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -46,8 +49,13 @@ public class AbstractTest {
     private SettingService settingService;
 
     @Transactional
-    protected UserEntity createTestUser() {
-        var user = userService.createUser(TEST_USER_STEAM_ID);
+    protected UserEntity createUser(String steamId) {
+        return userService.createUser(steamId);
+    }
+
+    @Transactional
+    protected UserEntity createTestUserWithSettingsAndAbilitySets(String steamId) {
+        var user = createUser(steamId);
         var settings = createTestSettings();
         var npcs = createTestNpcs();
 
