@@ -1,10 +1,15 @@
 MatchUpdate:
   type: object
   properties:
-    userMatchStatus:
-      $ref: '#/UserMatchStatus'
+    userMatchStatuses:
+      type: array
+      items:
+        $ref: '#/UserMatchStatus'
     wave:
       type: integer
+    matchId:
+      type: string
+      format: uuid
 UserMatchStatus:
   type: object
   properties:

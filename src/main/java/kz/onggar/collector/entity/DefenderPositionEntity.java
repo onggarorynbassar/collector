@@ -24,9 +24,6 @@ public class DefenderPositionEntity {
     @JoinColumn(name = "defender_id", nullable = false)
     private DefenderEntity defender;
 
-    @Column(nullable = false)
-    private String name;
-
     @ManyToOne()
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;

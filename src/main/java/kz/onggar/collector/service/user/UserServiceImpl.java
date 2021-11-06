@@ -1,9 +1,12 @@
 package kz.onggar.collector.service.user;
 
 import kz.onggar.collector.entity.UserEntity;
+import kz.onggar.collector.exception.ResourceNotFoundException;
 import kz.onggar.collector.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -20,6 +23,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(
                 new UserEntity()
                         .steamId(steamId)
+        );
+    }
+
+    @Override
+    public UserEntity findUserById(UUID id) {
+        return userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("User entity with id=[%s] not found".formatted(id))
         );
     }
 }

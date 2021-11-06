@@ -3,11 +3,14 @@ package kz.onggar.collector.service.match;
 
 import kz.onggar.collector.entity.MatchEntity;
 import kz.onggar.collector.entity.UserEntity;
+import kz.onggar.collector.entity.WaveEntity;
+import kz.onggar.collector.entity.WaveHistoryEntity;
 import kz.onggar.collector.exception.ResourceNotFoundException;
 import kz.onggar.collector.mapper.UserMapper;
 import kz.onggar.collector.openapi.dto.*;
 import kz.onggar.collector.repository.MatchRepository;
 import kz.onggar.collector.repository.UserRepository;
+import kz.onggar.collector.service.defender.DefenderPositionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +22,14 @@ import java.util.stream.Collectors;
 public class MatchServiceImpl implements MatchService {
     private final MatchRepository matchRepository;
     private final UserRepository userRepository;
+    private final DefenderPositionService defenderPositionService;
 
     public MatchServiceImpl(
             MatchRepository matchRepository,
-            UserRepository userRepository) {
+            UserRepository userRepository, DefenderPositionService defenderPositionService) {
         this.matchRepository = matchRepository;
         this.userRepository = userRepository;
+        this.defenderPositionService = defenderPositionService;
     }
 
     @Override
@@ -56,8 +61,23 @@ public class MatchServiceImpl implements MatchService {
     @Override
     @Transactional
     public void update(MatchUpdate matchUpdate) {
-        var matchEntity = getMatchEntity(matchUpdate.getUserMatchStatus().getId());
+        var matchEntity = getMatchEntity(matchUpdate.getMatchId());
         matchEntity.currentWave(matchUpdate.getWave());
+
+
+        var waveHistory = new WaveHistoryEntity();
+
+        waveHistory.wave();
+
+        matchUpdate.getUserMatchStatuses()
+                .forEach(userMatchStatus -> userMatchStatus
+                        .getDefenders()
+                        .forEach(defender -> defenderPositionService
+                                .saveDefenderPosition(defender, userMatchStatus.getId(), matchUpdate.getWave())
+                        )
+                );
+
+
         matchRepository.save(matchEntity);
     }
 }
