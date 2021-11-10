@@ -141,6 +141,15 @@ CREATE TABLE collector.user_wave_mercenary_spell
     mercenary_spell_id uuid NOT NULL REFERENCES collector.mercenary_spell (id)
 );
 
+
+CREATE TABLE collector.user_wave_ability_set
+(
+    id                 uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id            uuid NOT NULL REFERENCES collector.user (id),
+    wave_history_id    uuid NOT NULL REFERENCES collector.wave_history (id),
+    npc_ability_set_id uuid NOT NULL REFERENCES collector.npc_ability_set (id)
+);
+
 COMMENT ON COLUMN collector.user.simple_rating IS 'Вычисляется каждую игру';
 COMMENT ON COLUMN collector.user.competitive_rating IS 'Вычисляется если игрок выбрал пункт "играть за рейтинг"';
 COMMENT ON COLUMN collector.user.relative_rating IS 'Вычисляется если игрок выбрал пункт "играть за рейтинг" по особой системе';

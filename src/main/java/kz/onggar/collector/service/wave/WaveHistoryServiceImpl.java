@@ -3,26 +3,28 @@ package kz.onggar.collector.service.wave;
 import kz.onggar.collector.entity.WaveHistoryEntity;
 import kz.onggar.collector.exception.ResourceNotFoundException;
 import kz.onggar.collector.repository.WaveHistoryRepository;
-import kz.onggar.collector.service.match.MatchServiceImpl;
-import kz.onggar.collector.service.npcpack.NpcPackServiceImpl;
+import kz.onggar.collector.service.match.MatchService;
+import kz.onggar.collector.service.npcpack.NpcPackService;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-public class WaveHistoryImpl implements WaveHistoryService {
+
+@Service
+public class WaveHistoryServiceImpl implements WaveHistoryService {
 
     private final WaveHistoryRepository waveHistoryRepository;
-    private final MatchServiceImpl matchService;
-    private final NpcPackServiceImpl npcPackService;
-    private final WaveServiceImpl waveService;
+    private final MatchService matchService;
+    private final NpcPackService npcPackService;
+    private final WaveService waveService;
 
-    public WaveHistoryImpl(WaveHistoryRepository waveHistoryRepository, MatchServiceImpl matchService, NpcPackServiceImpl npcPackService, WaveServiceImpl waveService) {
+    public WaveHistoryServiceImpl(WaveHistoryRepository waveHistoryRepository, MatchService matchService, NpcPackService npcPackService, WaveService waveService) {
         this.waveHistoryRepository = waveHistoryRepository;
         this.matchService = matchService;
         this.npcPackService = npcPackService;
         this.waveService = waveService;
     }
-
 
     @Override
     @Transactional

@@ -35,7 +35,7 @@ public class UserMatchStatus   {
 
   @JsonProperty("spells")
   @Valid
-  private List<Object> spells = null;
+  private List<String> spells = null;
 
   @JsonProperty("npcAbilityOption")
   private Integer npcAbilityOption;
@@ -139,12 +139,12 @@ public class UserMatchStatus   {
     this.mercenaries = mercenaries;
   }
 
-  public UserMatchStatus spells(List<Object> spells) {
+  public UserMatchStatus spells(List<String> spells) {
     this.spells = spells;
     return this;
   }
 
-  public UserMatchStatus addSpellsItem(Object spellsItem) {
+  public UserMatchStatus addSpellsItem(String spellsItem) {
     if (this.spells == null) {
       this.spells = new ArrayList<>();
     }
@@ -159,11 +159,11 @@ public class UserMatchStatus   {
   @ApiModelProperty(value = "")
 
 
-  public List<Object> getSpells() {
+  public List<String> getSpells() {
     return spells;
   }
 
-  public void setSpells(List<Object> spells) {
+  public void setSpells(List<String> spells) {
     this.spells = spells;
   }
 

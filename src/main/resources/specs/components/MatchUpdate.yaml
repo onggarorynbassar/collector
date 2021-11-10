@@ -29,8 +29,6 @@ UserMatchStatus:
     spells:
       type: array
       items:
-        properties:
-          name:
-            type: string
+        type: string
     npcAbilityOption:
       type: integer

@@ -13,7 +13,7 @@ import java.util.UUID;
 @Accessors(fluent = true)
 @Getter
 @Setter
-public class UserWaveSpellEntity {
+public class UserWaveMercenarySpellEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
