@@ -64,9 +64,7 @@ public class MatchServiceImpl implements MatchService {
         var matchEntity = getMatchEntity(matchUpdate.getMatchId());
         matchEntity.currentWave(matchUpdate.getWave());
 
-
         var waveHistory = new WaveHistoryEntity();
-
         waveHistory.wave();
 
         matchUpdate.getUserMatchStatuses()
@@ -76,6 +74,7 @@ public class MatchServiceImpl implements MatchService {
                                 .saveDefenderPosition(defender, userMatchStatus.getId(), matchUpdate.getWave())
                         )
                 );
+
 
 
         matchRepository.save(matchEntity);
