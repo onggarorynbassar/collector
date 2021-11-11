@@ -1,6 +1,5 @@
 package kz.onggar.collector.repository;
 
-import kz.onggar.collector.entity.NpcEntity;
 import kz.onggar.collector.entity.WaveEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -9,11 +9,11 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "collector", name = "user_wave_ability_set")
+@Table(schema = "collector", name = "user_wave_mercenary_spell")
 @Accessors(fluent = true)
 @Getter
 @Setter
-public class UserWaveAbilitySetEntity {
+public class WaveMercenarySpellEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -27,6 +27,6 @@ public class UserWaveAbilitySetEntity {
     private WaveHistoryEntity waveHistory;
 
     @ManyToOne
-    @JoinColumn(name = "npc_ability_set_id")
-    private NpcAbilitySetEntity npcAbilitySet;
+    @JoinColumn(name = "mercenary_spell_id", nullable = false)
+    private MercenarySpellEntity mercenarySpell;
 }

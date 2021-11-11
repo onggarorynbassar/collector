@@ -1,4 +1,4 @@
-package kz.onggar.collector.service.npcpack;
+package kz.onggar.collector.service.npc;
 
 import kz.onggar.collector.entity.NpcPackEntity;
 

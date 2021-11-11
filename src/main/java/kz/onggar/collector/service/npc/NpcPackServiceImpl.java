@@ -1,4 +1,4 @@
-package kz.onggar.collector.service.npcpack;
+package kz.onggar.collector.service.npc;
 
 import kz.onggar.collector.entity.NpcPackEntity;
 import kz.onggar.collector.exception.ResourceNotFoundException;
@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @Service
 public class NpcPackServiceImpl implements NpcPackService {
-
     private final NpcPackRepository npcPackRepository;
 
     public NpcPackServiceImpl(NpcPackRepository npcPackRepository) {

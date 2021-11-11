@@ -13,7 +13,7 @@ import java.util.UUID;
 @Accessors(fluent = true)
 @Getter
 @Setter
-public class UserWaveMercenaryEntity {
+public class WaveMercenaryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
