@@ -10,7 +10,10 @@ import kz.onggar.collector.repository.MatchRepository;
 import kz.onggar.collector.service.defender.DefenderService;
 import kz.onggar.collector.service.mercenary.MercenaryService;
 import kz.onggar.collector.service.mercenary.MercenarySpellService;
+import kz.onggar.collector.service.npc.NpcAbilitySetService;
+import kz.onggar.collector.service.npc.NpcPackService;
 import kz.onggar.collector.service.user.UserService;
+import kz.onggar.collector.service.wave.WaveService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,19 +28,28 @@ public class MatchServiceImpl implements MatchService {
     private final DefenderService defenderService;
     private final MercenaryService mercenaryService;
     private final MercenarySpellService mercenarySpellService;
+    private final WaveService waveService;
+    private final NpcPackService npcPackService;
+    private final NpcAbilitySetService npcAbilitySetService;
 
     public MatchServiceImpl(
             MatchRepository matchRepository,
             UserService userService,
             DefenderService defenderService,
             MercenaryService mercenaryService,
-            MercenarySpellService mercenarySpellService
+            MercenarySpellService mercenarySpellService,
+            WaveService waveService,
+            NpcPackService npcPackService,
+            NpcAbilitySetService npcAbilitySetService
     ) {
         this.matchRepository = matchRepository;
         this.userService = userService;
         this.defenderService = defenderService;
         this.mercenaryService = mercenaryService;
         this.mercenarySpellService = mercenarySpellService;
+        this.waveService = waveService;
+        this.npcPackService = npcPackService;
+        this.npcAbilitySetService = npcAbilitySetService;
     }
 
     @Override
@@ -90,9 +102,15 @@ public class MatchServiceImpl implements MatchService {
                         .saveWaveMercenarySpell(userMatchStatus.getId(), waveHistoryId, spell));
     }
 
-//    private void saveAbilitySet(UserMatchStatus userMatchStatus, UUID waveHistoryId) {
-//        userWaveAbilitySetService.saveUserWaveAbilitySet(userMatchStatus.getId(), waveHistoryId, );
-//    }
+
+    private void saveWaveAbilitySet(UserMatchStatus userMatchStatus, WaveHistoryEntity waveHistoryEntity, String npcName) {
+        npcAbilitySetService.saveWaveAbilitySet(
+                userMatchStatus.getId(),
+                waveHistoryEntity.id(),
+                npcName,
+                userMatchStatus.getNpcAbilitySetOption());
+    }
+
 
     @Override
     @Transactional
@@ -101,8 +119,8 @@ public class MatchServiceImpl implements MatchService {
         matchEntity.currentWave(matchUpdate.getWave());
 
         var waveHistory = new WaveHistoryEntity();
-        waveHistory.wave();
-        waveHistory.npcPack();
+        waveHistory.wave(waveService.findWaveByRoundNumber(matchUpdate.getWave()));
+        waveHistory.npcPack(npcPackService.findNpcPackByNpcName(matchUpdate.getNpcName()));
         waveHistory.match(getMatchEntity(matchUpdate.getMatchId()));
 
         matchUpdate.getUserMatchStatuses()
@@ -110,6 +128,7 @@ public class MatchServiceImpl implements MatchService {
                             saveDefenderPosition(userMatchStatus, matchUpdate.getWave());
                             saveMercenaries(userMatchStatus, waveHistory.id());
                             saveMercenariesSpells(userMatchStatus, waveHistory.id());
+                            saveWaveAbilitySet(userMatchStatus, waveHistory, matchUpdate.getNpcName());
                         }
                 );
 

@@ -22,7 +22,7 @@ public class NpcAbilitySetEntity {
 
     @ManyToOne
     @JoinColumn(name = "npc_id", nullable = false)
-    private NpcEntity npcEntity;
+    private NpcEntity npc;
 
     private int option;
 }

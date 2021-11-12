@@ -6,4 +6,5 @@ import java.util.UUID;
 
 public interface NpcPackService {
     NpcPackEntity findNpcPackById(UUID id);
+    NpcPackEntity findNpcPackByNpcName(String name);
 }

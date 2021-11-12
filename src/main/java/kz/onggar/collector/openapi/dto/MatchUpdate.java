@@ -25,6 +25,9 @@ public class MatchUpdate   {
   @JsonProperty("wave")
   private Integer wave;
 
+  @JsonProperty("npcName")
+  private String npcName;
+
   @JsonProperty("matchId")
   private UUID matchId;
 
@@ -77,6 +80,26 @@ public class MatchUpdate   {
     this.wave = wave;
   }
 
+  public MatchUpdate npcName(String npcName) {
+    this.npcName = npcName;
+    return this;
+  }
+
+  /**
+   * Get npcName
+   * @return npcName
+  */
+  @ApiModelProperty(value = "")
+
+
+  public String getNpcName() {
+    return npcName;
+  }
+
+  public void setNpcName(String npcName) {
+    this.npcName = npcName;
+  }
+
   public MatchUpdate matchId(UUID matchId) {
     this.matchId = matchId;
     return this;
@@ -110,12 +133,13 @@ public class MatchUpdate   {
     MatchUpdate matchUpdate = (MatchUpdate) o;
     return Objects.equals(this.userMatchStatuses, matchUpdate.userMatchStatuses) &&
         Objects.equals(this.wave, matchUpdate.wave) &&
+        Objects.equals(this.npcName, matchUpdate.npcName) &&
         Objects.equals(this.matchId, matchUpdate.matchId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userMatchStatuses, wave, matchId);
+    return Objects.hash(userMatchStatuses, wave, npcName, matchId);
   }
 
   @Override
@@ -125,6 +149,7 @@ public class MatchUpdate   {
     
     sb.append("    userMatchStatuses: ").append(toIndentedString(userMatchStatuses)).append("\n");
     sb.append("    wave: ").append(toIndentedString(wave)).append("\n");
+    sb.append("    npcName: ").append(toIndentedString(npcName)).append("\n");
     sb.append("    matchId: ").append(toIndentedString(matchId)).append("\n");
     sb.append("}");
     return sb.toString();

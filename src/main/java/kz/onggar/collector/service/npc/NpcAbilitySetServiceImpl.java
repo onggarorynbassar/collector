@@ -3,6 +3,7 @@ package kz.onggar.collector.service.npc;
 
 import kz.onggar.collector.entity.NpcAbilitySetEntity;
 import kz.onggar.collector.entity.WaveAbilitySetEntity;
+import kz.onggar.collector.entity.WaveHistoryEntity;
 import kz.onggar.collector.exception.ResourceNotFoundException;
 import kz.onggar.collector.repository.NpcAbilitySetRepository;
 import kz.onggar.collector.repository.WaveAbilitySetRepository;
@@ -42,7 +43,7 @@ public class NpcAbilitySetServiceImpl implements NpcAbilitySetService {
 
         return npcAbilitySetRepository.save(
                 new NpcAbilitySetEntity()
-                        .npcEntity(npc)
+                        .npc(npc)
                         .option(option)
         );
     }
@@ -55,15 +56,30 @@ public class NpcAbilitySetServiceImpl implements NpcAbilitySetService {
         );
     }
 
+    @Override
+    @Transactional
+    public NpcAbilitySetEntity findByNpcIdAndOption(UUID npcId, int option) {
+        return npcAbilitySetRepository.findByNpc_IdAndOption(npcId, option).orElseThrow(
+                () -> new ResourceNotFoundException("Npc ability set with npc_id=[%s] and option=[%s] not found".formatted(npcId, option)));
+
+
+    }
 
     @Override
     @Transactional
-    public void saveWaveAbilitySet(UUID userId, UUID waveHistoryId, UUID npcAbilitySetId) {
+    public void saveWaveAbilitySet(UUID userId, UUID waveHistoryId, String npcName, int npcAbilitySetOption) {
         var userWaveAbilitySet = new WaveAbilitySetEntity();
 
         userWaveAbilitySet.user(userService.findUserEntityById(userId));
         userWaveAbilitySet.waveHistory(waveService.findWaveHistoryById(waveHistoryId));
-        userWaveAbilitySet.npcAbilitySet(findNpcAbilitySetById(npcAbilitySetId));
+        userWaveAbilitySet.npcAbilitySet(
+                findNpcAbilitySetById(
+                        findByNpcIdAndOption(
+                                npcService.getByName(npcName).id(),
+                                npcAbilitySetOption
+                        ).id()
+                )
+        );
 
         waveAbilitySetRepository.save(userWaveAbilitySet);
     }

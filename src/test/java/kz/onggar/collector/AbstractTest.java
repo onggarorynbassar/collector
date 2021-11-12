@@ -72,13 +72,13 @@ public class AbstractTest {
         user.settings().add(userSetting2);
 
         var abilitySets = List.of(
-                npcAbilitySetRepository.save(new NpcAbilitySetEntity().npcEntity(npcs.get(0)).option(1)),
-                npcAbilitySetRepository.save(new NpcAbilitySetEntity().npcEntity(npcs.get(0)).option(2)),
-                npcAbilitySetRepository.save(new NpcAbilitySetEntity().npcEntity(npcs.get(0)).option(3)),
-                npcAbilitySetRepository.save(new NpcAbilitySetEntity().npcEntity(npcs.get(1)).option(1)),
-                npcAbilitySetRepository.save(new NpcAbilitySetEntity().npcEntity(npcs.get(1)).option(2)),
-                npcAbilitySetRepository.save(new NpcAbilitySetEntity().npcEntity(npcs.get(2)).option(1)),
-                npcAbilitySetRepository.save(new NpcAbilitySetEntity().npcEntity(npcs.get(2)).option(2))
+                npcAbilitySetRepository.save(new NpcAbilitySetEntity().npc(npcs.get(0)).option(1)),
+                npcAbilitySetRepository.save(new NpcAbilitySetEntity().npc(npcs.get(0)).option(2)),
+                npcAbilitySetRepository.save(new NpcAbilitySetEntity().npc(npcs.get(0)).option(3)),
+                npcAbilitySetRepository.save(new NpcAbilitySetEntity().npc(npcs.get(1)).option(1)),
+                npcAbilitySetRepository.save(new NpcAbilitySetEntity().npc(npcs.get(1)).option(2)),
+                npcAbilitySetRepository.save(new NpcAbilitySetEntity().npc(npcs.get(2)).option(1)),
+                npcAbilitySetRepository.save(new NpcAbilitySetEntity().npc(npcs.get(2)).option(2))
         );
 
         abilitySets.forEach((it) -> user.npcAbilitySets().add(it));

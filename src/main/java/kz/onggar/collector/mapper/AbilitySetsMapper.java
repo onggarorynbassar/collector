@@ -13,7 +13,7 @@ public class AbilitySetsMapper {
                 .stream()
                 .collect(
                         Collectors.groupingBy(
-                                abilitySetEntity -> abilitySetEntity.npcEntity().name()
+                                abilitySetEntity -> abilitySetEntity.npc().name()
                         )
                 ).entrySet().stream().map(
                         it -> new NpcAbilitySet()

@@ -11,9 +11,11 @@ import java.util.UUID;
 @Service
 public class NpcPackServiceImpl implements NpcPackService {
     private final NpcPackRepository npcPackRepository;
+    private final NpcService npcService;
 
-    public NpcPackServiceImpl(NpcPackRepository npcPackRepository) {
+    public NpcPackServiceImpl(NpcPackRepository npcPackRepository, NpcService npcService) {
         this.npcPackRepository = npcPackRepository;
+        this.npcService = npcService;
     }
 
     @Override
@@ -21,6 +23,14 @@ public class NpcPackServiceImpl implements NpcPackService {
     public NpcPackEntity findNpcPackById(UUID id) {
         return npcPackRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Npc pack entity with id=[%s] not found".formatted(id))
+        );
+    }
+
+    @Override
+    public NpcPackEntity findNpcPackByNpcName(String name) {
+        var npcEntity = npcService.getByName(name);
+        return npcPackRepository.findById(npcEntity.id()).orElseThrow(
+                () -> new ResourceNotFoundException("Npc pack entity with id=[%s] not found".formatted(npcEntity.id()))
         );
     }
 }

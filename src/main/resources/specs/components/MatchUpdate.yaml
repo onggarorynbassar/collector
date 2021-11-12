@@ -7,6 +7,8 @@ MatchUpdate:
         $ref: '#/UserMatchStatus'
     wave:
       type: integer
+    npcName:
+      type: string
     matchId:
       type: string
       format: uuid
@@ -30,5 +32,5 @@ UserMatchStatus:
       type: array
       items:
         type: string
-    npcAbilityOption:
+    npcAbilitySetOption:
       type: integer

@@ -37,8 +37,8 @@ public class UserMatchStatus   {
   @Valid
   private List<String> spells = null;
 
-  @JsonProperty("npcAbilityOption")
-  private Integer npcAbilityOption;
+  @JsonProperty("npcAbilitySetOption")
+  private Integer npcAbilitySetOption;
 
   public UserMatchStatus id(UUID id) {
     this.id = id;
@@ -167,24 +167,24 @@ public class UserMatchStatus   {
     this.spells = spells;
   }
 
-  public UserMatchStatus npcAbilityOption(Integer npcAbilityOption) {
-    this.npcAbilityOption = npcAbilityOption;
+  public UserMatchStatus npcAbilitySetOption(Integer npcAbilitySetOption) {
+    this.npcAbilitySetOption = npcAbilitySetOption;
     return this;
   }
 
   /**
-   * Get npcAbilityOption
-   * @return npcAbilityOption
+   * Get npcAbilitySetOption
+   * @return npcAbilitySetOption
   */
   @ApiModelProperty(value = "")
 
 
-  public Integer getNpcAbilityOption() {
-    return npcAbilityOption;
+  public Integer getNpcAbilitySetOption() {
+    return npcAbilitySetOption;
   }
 
-  public void setNpcAbilityOption(Integer npcAbilityOption) {
-    this.npcAbilityOption = npcAbilityOption;
+  public void setNpcAbilitySetOption(Integer npcAbilitySetOption) {
+    this.npcAbilitySetOption = npcAbilitySetOption;
   }
 
 
@@ -202,12 +202,12 @@ public class UserMatchStatus   {
         Objects.equals(this.defenders, userMatchStatus.defenders) &&
         Objects.equals(this.mercenaries, userMatchStatus.mercenaries) &&
         Objects.equals(this.spells, userMatchStatus.spells) &&
-        Objects.equals(this.npcAbilityOption, userMatchStatus.npcAbilityOption);
+        Objects.equals(this.npcAbilitySetOption, userMatchStatus.npcAbilitySetOption);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, alive, defenders, mercenaries, spells, npcAbilityOption);
+    return Objects.hash(id, alive, defenders, mercenaries, spells, npcAbilitySetOption);
   }
 
   @Override
@@ -220,7 +220,7 @@ public class UserMatchStatus   {
     sb.append("    defenders: ").append(toIndentedString(defenders)).append("\n");
     sb.append("    mercenaries: ").append(toIndentedString(mercenaries)).append("\n");
     sb.append("    spells: ").append(toIndentedString(spells)).append("\n");
-    sb.append("    npcAbilityOption: ").append(toIndentedString(npcAbilityOption)).append("\n");
+    sb.append("    npcAbilitySetOption: ").append(toIndentedString(npcAbilitySetOption)).append("\n");
     sb.append("}");
     return sb.toString();
   }
