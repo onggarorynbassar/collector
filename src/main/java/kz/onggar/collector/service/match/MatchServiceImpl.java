@@ -84,7 +84,7 @@ public class MatchServiceImpl implements MatchService {
         userMatchStatus
                 .getDefenders()
                 .forEach(defender -> defenderService
-                        .saveDefenderPosition(defender, userMatchStatus.getId(), waveNumber)
+                        .saveDefenderPosition(defender, userMatchStatus.getPlayerId(), waveNumber)
                 );
     }
 
@@ -92,20 +92,20 @@ public class MatchServiceImpl implements MatchService {
         userMatchStatus
                 .getMercenaries()
                 .forEach(mercenary -> mercenaryService
-                        .saveWaveMercenary(userMatchStatus.getId(), waveHistoryId, mercenary.getName(), mercenary.getCount()));
+                        .saveWaveMercenary(userMatchStatus.getPlayerId(), waveHistoryId, mercenary.getName(), mercenary.getCount()));
     }
 
     private void saveMercenariesSpells(UserMatchStatus userMatchStatus, UUID waveHistoryId) {
         userMatchStatus
                 .getSpells()
                 .forEach(spell -> mercenarySpellService
-                        .saveWaveMercenarySpell(userMatchStatus.getId(), waveHistoryId, spell));
+                        .saveWaveMercenarySpell(userMatchStatus.getPlayerId(), waveHistoryId, spell.getName()));
     }
 
 
     private void saveWaveAbilitySet(UserMatchStatus userMatchStatus, WaveHistoryEntity waveHistoryEntity, String npcName) {
         npcAbilitySetService.saveWaveAbilitySet(
-                userMatchStatus.getId(),
+                userMatchStatus.getPlayerId(),
                 waveHistoryEntity.id(),
                 npcName,
                 userMatchStatus.getNpcAbilitySetOption());

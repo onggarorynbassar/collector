@@ -1,0 +1,5 @@
+MercenarySpell:
+  type: object
+  properties:
+    name:
+      type: string

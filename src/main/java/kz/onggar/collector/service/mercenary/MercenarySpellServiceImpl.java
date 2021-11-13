@@ -48,4 +48,9 @@ public class MercenarySpellServiceImpl implements MercenarySpellService {
 
         waveMercenarySpellRepository.save(userWaveMercenarySpell);
     }
+
+    @Override
+    public MercenarySpellEntity createMercenarySpell(String name) {
+        return mercenarySpellRepository.save(new MercenarySpellEntity().name(name));
+    }
 }

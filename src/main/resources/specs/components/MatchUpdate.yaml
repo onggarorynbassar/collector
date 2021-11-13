@@ -15,7 +15,7 @@ MatchUpdate:
 UserMatchStatus:
   type: object
   properties:
-    id:
+    playerId:
       type: string
       format: uuid
     alive:
@@ -29,8 +29,8 @@ UserMatchStatus:
       items:
         $ref: 'Mercenary.yaml#/Mercenary'
     spells:
-      type: array
+      type: object
       items:
-        type: string
+        $ref: 'MercenarySpell.yaml#/MercenarySpell'
     npcAbilitySetOption:
       type: integer

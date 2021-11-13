@@ -3,6 +3,9 @@ package kz.onggar.collector;
 import kz.onggar.collector.entity.*;
 import kz.onggar.collector.repository.NpcAbilitySetRepository;
 import kz.onggar.collector.repository.UserRepository;
+import kz.onggar.collector.service.defender.DefenderService;
+import kz.onggar.collector.service.mercenary.MercenaryService;
+import kz.onggar.collector.service.mercenary.MercenarySpellService;
 import kz.onggar.collector.service.npc.NpcService;
 import kz.onggar.collector.service.setting.SettingService;
 import kz.onggar.collector.service.user.UserService;
@@ -34,19 +37,28 @@ public class AbstractTest {
     protected MockMvc mvc;
 
     @Autowired
-    private UserService userService;
+    protected UserService userService;
 
     @Autowired
-    private UserRepository userRepository;
+    protected UserRepository userRepository;
 
     @Autowired
-    private NpcAbilitySetRepository npcAbilitySetRepository;
+    protected NpcAbilitySetRepository npcAbilitySetRepository;
 
     @Autowired
-    private NpcService npcService;
+    protected NpcService npcService;
 
     @Autowired
-    private SettingService settingService;
+    protected SettingService settingService;
+
+    @Autowired
+    protected DefenderService defenderService;
+
+    @Autowired
+    protected MercenaryService mercenaryService;
+
+    @Autowired
+    protected MercenarySpellService mercenarySpellService;
 
     @Transactional
     protected UserEntity createUser(String steamId) {
@@ -99,6 +111,33 @@ public class AbstractTest {
                 npcService.createNpc(TEST_NPC_NAME_1),
                 npcService.createNpc(TEST_NPC_NAME_2),
                 npcService.createNpc(TEST_NPC_NAME_3)
+        );
+    }
+
+    @Transactional
+    protected List<DefenderEntity> createDefenders() {
+        return List.of(
+                defenderService.createDefender("michael"),
+                defenderService.createDefender("john"),
+                defenderService.createDefender("debik")
+        );
+    }
+
+    @Transactional
+    protected List<MercenaryEntity> createMercenaries() {
+        return List.of(
+                mercenaryService.createMercenary("chubrik"),
+                mercenaryService.createMercenary("bomzh"),
+                mercenaryService.createMercenary("sniper")
+        );
+    }
+
+    @Transactional
+    protected List<MercenarySpellEntity> createMercenarySpells() {
+        return List.of(
+                mercenarySpellService.createMercenarySpell("abra-kadabra"),
+                mercenarySpellService.createMercenarySpell("eto nikto"),
+                mercenarySpellService.createMercenarySpell("ne uvidit")
         );
     }
 

@@ -50,4 +50,9 @@ public class MercenaryServiceImpl implements MercenaryService {
 
         waveMercenaryRepository.save(userWaveMercenary);
     }
+
+    @Override
+    public MercenaryEntity createMercenary(String name) {
+        return mercenaryNpcRepository.save(new MercenaryEntity().name(name));
+    }
 }

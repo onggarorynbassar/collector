@@ -35,8 +35,8 @@ public class DefenderServiceImpl implements DefenderService {
     }
 
     @Override
-    public void createDefender(String name) {
-        defenderRepository.save(new DefenderEntity().name(name));
+    public DefenderEntity createDefender(String name) {
+        return defenderRepository.save(new DefenderEntity().name(name));
     }
 
     @Override
