@@ -202,6 +202,17 @@ public class AbstractTest {
         }).collect(Collectors.toList());
     }
 
+    protected void createTestNpcAbilitySets(List<NpcEntity> npcEntities) {
+        npcEntities.forEach(
+                npcEntity -> {
+                    npcAbilitySetRepository.save(new NpcAbilitySetEntity().npc(npcEntity).option(0));
+                    npcAbilitySetRepository.save(new NpcAbilitySetEntity().npc(npcEntity).option(1));
+                    npcAbilitySetRepository.save(new NpcAbilitySetEntity().npc(npcEntity).option(2));
+                    npcAbilitySetRepository.save(new NpcAbilitySetEntity().npc(npcEntity).option(3));
+                }
+        );
+    }
+
     protected List<UserMatchStatus> createMockUserMatchStatuses(
             MatchStart startMatch,
             List<Defender> defendersDTO,
@@ -218,7 +229,7 @@ public class AbstractTest {
             userMatchStatus.setDefenders(defendersDTO);
             userMatchStatus.setMercenaries(mercenariesDTO);
             userMatchStatus.setSpells(spellsDTO);
-            userMatchStatus.setNpcAbilitySetOption(0);
+            userMatchStatus.setNpcAbilitySetOption(1);
 
             userMatchStatuses.add(userMatchStatus);
         });

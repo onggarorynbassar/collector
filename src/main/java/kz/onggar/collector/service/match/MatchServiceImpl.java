@@ -118,10 +118,11 @@ public class MatchServiceImpl implements MatchService {
         var matchEntity = getMatchEntity(matchUpdate.getMatchId());
         matchEntity.currentWave(matchUpdate.getWave());
 
-        var waveHistory = new WaveHistoryEntity();
-        waveHistory.wave(waveService.findWaveByRoundNumber(matchUpdate.getWave()));
-        waveHistory.npcPack(npcPackService.findNpcPackByNpcName(matchUpdate.getNpcName()));
-        waveHistory.match(getMatchEntity(matchUpdate.getMatchId()));
+        var waveHistory = waveService.createWaveHistory(
+                getMatchEntity(matchUpdate.getMatchId()),
+                npcPackService.findNpcPackByNpcName(matchUpdate.getNpcName()).id(),
+                waveService.findWaveByRoundNumber(matchUpdate.getWave())
+        );
 
         matchUpdate.getUserMatchStatuses()
                 .forEach(userMatchStatus -> {

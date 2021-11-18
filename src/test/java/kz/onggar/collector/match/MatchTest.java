@@ -72,6 +72,7 @@ class MatchTest extends AbstractTest {
         var createNpc = createTestNpcs();
         createTestWaves();
         createTestNpcPacks(createNpc);
+        createTestNpcAbilitySets(createNpc);
 
         var defendersDTO = createTestDefendersDTO();
         var mercenariesDTO = createTestMercenariesDTO();
