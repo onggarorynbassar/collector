@@ -7,6 +7,8 @@ import kz.onggar.collector.repository.NpcRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class NpcServiceImpl implements NpcService {
     private final NpcRepository npcRepository;
@@ -27,5 +29,10 @@ public class NpcServiceImpl implements NpcService {
         return npcRepository.findByName(name).orElseThrow(
                 () -> new ResourceNotFoundException("Npc with name=[%s] not found".formatted(name))
         );
+    }
+
+    @Override
+    public List<NpcEntity> findAllNpcs() {
+        return npcRepository.findAll();
     }
 }

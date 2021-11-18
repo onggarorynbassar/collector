@@ -87,7 +87,12 @@ class MatchTest extends AbstractTest {
         makePutRequest(mvc, "/matches", matchUpdate, status().isOk());
 
         assertAll("starting and updating match with perfect values",
-                () -> assertNotNull(matchService.getMatchEntity(startMatch.getMatch().getId()))
+                () -> assertNotNull(matchService.getMatchEntity(startMatch.getMatch().getId())),
+                () -> assertEquals(matchService.getMatchEntity(startMatch.getMatch().getId()).id(), startMatch.getMatch().getId()),
+                () -> assertEquals(createNpc, npcService.findAllNpcs()),
+                () -> assertEquals(npcService.getByName(createNpc.get(0).name()).name(), createNpc.get(0).name()),
+                () -> assertEquals(waveService.findWaveByRoundNumber(15).roundNumber(), 15),
+                () -> assertFalse(userService.getAllUsers().isEmpty())
         );
     }
 }

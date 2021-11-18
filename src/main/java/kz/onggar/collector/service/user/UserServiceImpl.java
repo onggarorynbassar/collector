@@ -6,6 +6,7 @@ import kz.onggar.collector.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,5 +45,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public Optional<UserEntity> getUserEntityById(UUID id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public List<UserEntity> getAllUsers() {
+        return userRepository.findAll();
     }
 }
