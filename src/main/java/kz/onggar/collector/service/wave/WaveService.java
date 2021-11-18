@@ -12,4 +12,5 @@ public interface WaveService {
     WaveEntity findWaveByRoundNumber(int roundNumber);
     WaveHistoryEntity createWaveHistory(MatchEntity matchEntity, UUID npcPackId, WaveEntity waveEntity);
     WaveHistoryEntity findWaveHistoryById(UUID waveHistoryId);
+    WaveEntity createWave(int roundNumber);
 }

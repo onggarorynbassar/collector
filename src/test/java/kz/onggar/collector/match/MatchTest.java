@@ -1,24 +1,20 @@
 package kz.onggar.collector.match;
 
 import kz.onggar.collector.AbstractTest;
-import kz.onggar.collector.entity.MercenaryEntity;
-import kz.onggar.collector.exception.ResourceNotFoundException;
-import kz.onggar.collector.openapi.dto.*;
+import kz.onggar.collector.openapi.dto.MatchStart;
+import kz.onggar.collector.openapi.dto.MatchUpdate;
+import kz.onggar.collector.openapi.dto.SteamIds;
+import kz.onggar.collector.openapi.dto.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
 
-import static kz.onggar.collector.util.TestHelper.makePostRequest;
-import static kz.onggar.collector.util.TestHelper.transformResponseToObject;
+import static kz.onggar.collector.util.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class MatchTest extends AbstractTest {
-
 
     private MatchStart createMatch(SteamIds steamIds) throws Exception {
         return transformResponseToObject(
@@ -74,65 +70,23 @@ class MatchTest extends AbstractTest {
 
         var startMatch = createMatch(steamIds);
         var createNpc = createTestNpcs();
+        createTestWaves();
+        createTestNpcPacks(createNpc);
 
-        var defendersDTO = createDefenders().stream().map(defender -> {
-            var newDefender = new Defender();
-
-            newDefender.setName(defender.name());
-            newDefender.setPositionX(0);
-            newDefender.setPositionY(0);
-
-            return newDefender;
-        }).collect(Collectors.toList());
-
-        var mercenariesDTO = createMercenaries().stream().map(mercenary -> {
-            var newMercenary = new Mercenary();
-            newMercenary.name(mercenary.name());
-            newMercenary.count(10);
-
-            return newMercenary;
-        }).collect(Collectors.toList());
-
-        var spellsDTO = createMercenarySpells().stream().map(spell -> {
-            var newSpell = new MercenarySpell();
-            newSpell.setName(spell.name());
-
-            return newSpell;
-        }).collect(Collectors.toList());
-
-        var userMatchStatuses = new ArrayList<UserMatchStatus>();
-
-        startMatch.getUsers().forEach(user -> {
-
-            var userMatchStatus = new UserMatchStatus();
-
-            userMatchStatus.setPlayerId(user.getId());
-            userMatchStatus.setAlive(true);
-            userMatchStatus.setDefenders(defendersDTO);
-            userMatchStatus.setMercenaries(mercenariesDTO);
-            userMatchStatus.setSpells(spellsDTO);
-            userMatchStatus.setNpcAbilitySetOption(0);
-
-            userMatchStatuses.add(userMatchStatus);
-        });
+        var defendersDTO = createTestDefendersDTO();
+        var mercenariesDTO = createTestMercenariesDTO();
+        var spellsDTO = createTestSpellsDTO();
 
         var matchUpdate = new MatchUpdate();
         matchUpdate.setMatchId(startMatch.getMatch().getId());
         matchUpdate.setNpcName(createNpc.get(0).name());
         matchUpdate.setWave(15);
-        matchUpdate.setUserMatchStatuses(userMatchStatuses);
+        matchUpdate.setUserMatchStatuses(createMockUserMatchStatuses(startMatch, defendersDTO, mercenariesDTO, spellsDTO));
 
+        makePutRequest(mvc, "/matches", matchUpdate, status().isOk());
 
-        makePostRequest(mvc, "/matches", matchUpdate, status().isOk());
-
-
-//        assertAll("updating match with perfect values",
-//
-//                () ->
-//
-//        );
-
-        //TODO assertEquals database values with mock values
-
+        assertAll("starting and updating match with perfect values",
+                () -> assertNotNull(matchService.getMatchEntity(startMatch.getMatch().getId()))
+        );
     }
 }

@@ -1,21 +1,27 @@
 package kz.onggar.collector;
 
 import kz.onggar.collector.entity.*;
+import kz.onggar.collector.openapi.dto.*;
 import kz.onggar.collector.repository.NpcAbilitySetRepository;
 import kz.onggar.collector.repository.UserRepository;
 import kz.onggar.collector.service.defender.DefenderService;
+import kz.onggar.collector.service.match.MatchService;
 import kz.onggar.collector.service.mercenary.MercenaryService;
 import kz.onggar.collector.service.mercenary.MercenarySpellService;
+import kz.onggar.collector.service.npc.NpcPackService;
 import kz.onggar.collector.service.npc.NpcService;
 import kz.onggar.collector.service.setting.SettingService;
 import kz.onggar.collector.service.user.UserService;
+import kz.onggar.collector.service.wave.WaveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
@@ -40,6 +46,9 @@ public class AbstractTest {
     protected UserService userService;
 
     @Autowired
+    protected MatchService matchService;
+
+    @Autowired
     protected UserRepository userRepository;
 
     @Autowired
@@ -47,6 +56,9 @@ public class AbstractTest {
 
     @Autowired
     protected NpcService npcService;
+
+    @Autowired
+    protected NpcPackService npcPackService;
 
     @Autowired
     protected SettingService settingService;
@@ -59,6 +71,9 @@ public class AbstractTest {
 
     @Autowired
     protected MercenarySpellService mercenarySpellService;
+
+    @Autowired
+    protected WaveService waveService;
 
     @Transactional
     protected UserEntity createUser(String steamId) {
@@ -115,7 +130,15 @@ public class AbstractTest {
     }
 
     @Transactional
-    protected List<DefenderEntity> createDefenders() {
+    protected List<NpcPackEntity> createTestNpcPacks(List<NpcEntity> npcEntities) {
+        return npcEntities.stream().map(npcEntity ->
+                npcPackService
+                        .createNpcPack(npcEntity, 10))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    protected List<DefenderEntity> createTestDefenders() {
         return List.of(
                 defenderService.createDefender("michael"),
                 defenderService.createDefender("john"),
@@ -124,7 +147,7 @@ public class AbstractTest {
     }
 
     @Transactional
-    protected List<MercenaryEntity> createMercenaries() {
+    protected List<MercenaryEntity> createTestMercenaries() {
         return List.of(
                 mercenaryService.createMercenary("chubrik"),
                 mercenaryService.createMercenary("bomzh"),
@@ -133,7 +156,7 @@ public class AbstractTest {
     }
 
     @Transactional
-    protected List<MercenarySpellEntity> createMercenarySpells() {
+    protected List<MercenarySpellEntity> createTestMercenarySpells() {
         return List.of(
                 mercenarySpellService.createMercenarySpell("abra-kadabra"),
                 mercenarySpellService.createMercenarySpell("eto nikto"),
@@ -141,4 +164,65 @@ public class AbstractTest {
         );
     }
 
+    @Transactional
+    protected void createTestWaves() {
+        for (int i = 1; i < 41; i++) {
+            waveService.createWave(i);
+        }
+    }
+
+    protected List<Defender> createTestDefendersDTO() {
+        return createTestDefenders().stream().map(defender -> {
+            var newDefender = new Defender();
+
+            newDefender.setName(defender.name());
+            newDefender.setPositionX(0);
+            newDefender.setPositionY(0);
+
+            return newDefender;
+        }).collect(Collectors.toList());
+    }
+
+    protected List<Mercenary> createTestMercenariesDTO() {
+        return createTestMercenaries().stream().map(mercenary -> {
+            var newMercenary = new Mercenary();
+            newMercenary.name(mercenary.name());
+            newMercenary.count(10);
+
+            return newMercenary;
+        }).collect(Collectors.toList());
+    }
+
+    protected List<MercenarySpell> createTestSpellsDTO() {
+        return createTestMercenarySpells().stream().map(spell -> {
+            var newSpell = new MercenarySpell();
+            newSpell.setName(spell.name());
+
+            return newSpell;
+        }).collect(Collectors.toList());
+    }
+
+    protected List<UserMatchStatus> createMockUserMatchStatuses(
+            MatchStart startMatch,
+            List<Defender> defendersDTO,
+            List<Mercenary> mercenariesDTO,
+            List<MercenarySpell> spellsDTO
+    ) {
+        var userMatchStatuses = new ArrayList<UserMatchStatus>();
+        startMatch.getUsers().forEach(user -> {
+
+            var userMatchStatus = new UserMatchStatus();
+
+            userMatchStatus.setPlayerId(user.getId());
+            userMatchStatus.setAlive(true);
+            userMatchStatus.setDefenders(defendersDTO);
+            userMatchStatus.setMercenaries(mercenariesDTO);
+            userMatchStatus.setSpells(spellsDTO);
+            userMatchStatus.setNpcAbilitySetOption(0);
+
+            userMatchStatuses.add(userMatchStatus);
+        });
+
+        return userMatchStatuses;
+    }
 }

@@ -50,4 +50,13 @@ public class TestHelper {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
     }
+
+    public static ResultActions makePutRequest(MockMvc mvc, String uriTemplate, Object content, ResultMatcher status) throws Exception {
+        return mvc.perform(MockMvcRequestBuilders
+                .put(uriTemplate)
+                .content(asJsonString(content))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status);
+    }
 }

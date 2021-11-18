@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "collector", name = "defender_position")
+@Table(schema = "collector", name = "wave")
 @Accessors(fluent = true)
 @Getter
 @Setter

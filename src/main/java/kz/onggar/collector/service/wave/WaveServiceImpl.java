@@ -63,4 +63,10 @@ public class WaveServiceImpl implements WaveService {
                 () -> new ResourceNotFoundException("Wave history entity with id=[%s] not found".formatted(id))
         );
     }
+
+    @Override
+    @Transactional
+    public WaveEntity createWave(int roundNumber) {
+        return waveRepository.save(new WaveEntity().roundNumber(roundNumber));
+    }
 }
