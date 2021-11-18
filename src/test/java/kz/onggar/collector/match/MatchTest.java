@@ -69,10 +69,10 @@ class MatchTest extends AbstractTest {
         steamIds.setSteamIds(List.of("a1", "a2", TEST_USER_STEAM_ID, "a4", "a5", "a6", "a7", "a8"));
 
         var startMatch = createMatch(steamIds);
-        var createNpc = createTestNpcs();
+        var testNpcs = createTestNpcs();
         createTestWaves();
-        createTestNpcPacks(createNpc);
-        createTestNpcAbilitySets(createNpc);
+        createTestNpcPacks(testNpcs);
+        createTestNpcAbilitySets(testNpcs);
 
         var defendersDTO = createTestDefendersDTO();
         var mercenariesDTO = createTestMercenariesDTO();
@@ -80,7 +80,7 @@ class MatchTest extends AbstractTest {
 
         var matchUpdate = new MatchUpdate();
         matchUpdate.setMatchId(startMatch.getMatch().getId());
-        matchUpdate.setNpcName(createNpc.get(0).name());
+        matchUpdate.setNpcName(testNpcs.get(0).name());
         matchUpdate.setWave(15);
         matchUpdate.setUserMatchStatuses(createMockUserMatchStatuses(startMatch, defendersDTO, mercenariesDTO, spellsDTO));
 
@@ -89,8 +89,8 @@ class MatchTest extends AbstractTest {
         assertAll("starting and updating match with perfect values",
                 () -> assertNotNull(matchService.getMatchEntity(startMatch.getMatch().getId())),
                 () -> assertEquals(matchService.getMatchEntity(startMatch.getMatch().getId()).id(), startMatch.getMatch().getId()),
-                () -> assertEquals(createNpc, npcService.findAllNpcs()),
-                () -> assertEquals(npcService.getByName(createNpc.get(0).name()).name(), createNpc.get(0).name()),
+                () -> assertEquals(testNpcs, npcService.findAllNpcs()),
+                () -> assertEquals(npcService.getByName(testNpcs.get(0).name()).name(), testNpcs.get(0).name()),
                 () -> assertEquals(waveService.findWaveByRoundNumber(15).roundNumber(), 15),
                 () -> assertFalse(userService.getAllUsers().isEmpty())
         );
