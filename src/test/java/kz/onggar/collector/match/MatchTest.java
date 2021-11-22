@@ -1,10 +1,7 @@
 package kz.onggar.collector.match;
 
 import kz.onggar.collector.AbstractTest;
-import kz.onggar.collector.openapi.dto.MatchStart;
-import kz.onggar.collector.openapi.dto.MatchUpdate;
-import kz.onggar.collector.openapi.dto.SteamIds;
-import kz.onggar.collector.openapi.dto.User;
+import kz.onggar.collector.openapi.dto.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,6 +59,42 @@ class MatchTest extends AbstractTest {
         );
     }
 
+    private boolean testPlayerDefenders(List<UserMatchStatus> users) {
+        for (UserMatchStatus user : users) {
+            for (Defender defender : user.getDefenders()) {
+                var optionalDefender = defenderService.findDefenderByName(defender.getName());
+                if (optionalDefender.name() == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean testMercenaries(List<UserMatchStatus> users) {
+        for (UserMatchStatus user : users) {
+            for (Mercenary mercenary : user.getMercenaries()) {
+                var optionalMercenary = mercenaryService.getMercenaryByName(mercenary.getName());
+                if (optionalMercenary.name() == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean testMercenarySpells(List<UserMatchStatus> users) {
+        for (UserMatchStatus user : users) {
+            for (MercenarySpell mercenarySpell : user.getSpells()) {
+                var optionalMercenarySpell = mercenarySpellService.getMercenarySpellByName(mercenarySpell.getName());
+                if (optionalMercenarySpell.name() == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     @Test
     @Transactional
     void updateMatchWithPerfectData() throws Exception {
@@ -92,7 +125,10 @@ class MatchTest extends AbstractTest {
                 () -> assertEquals(testNpcs, npcService.findAllNpcs()),
                 () -> assertEquals(npcService.getByName(testNpcs.get(0).name()).name(), testNpcs.get(0).name()),
                 () -> assertEquals(waveService.findWaveByRoundNumber(15).roundNumber(), 15),
-                () -> assertFalse(userService.getAllUsers().isEmpty())
+                () -> assertFalse(userService.getAllUsers().isEmpty()),
+                () -> assertTrue(testPlayerDefenders(matchUpdate.getUserMatchStatuses())),
+                () -> assertTrue(testMercenaries(matchUpdate.getUserMatchStatuses())),
+                () -> assertTrue(testMercenarySpells(matchUpdate.getUserMatchStatuses()))
         );
     }
 }
