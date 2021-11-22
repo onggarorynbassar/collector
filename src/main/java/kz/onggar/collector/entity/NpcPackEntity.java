@@ -1,28 +1,25 @@
 package kz.onggar.collector.entity;
 
-
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "collector", name = "npc_ability_set")
+@Table(schema = "collector", name = "npc_pack")
 @Accessors(fluent = true)
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class NpcAbilitySetEntity {
+public class NpcPackEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "npc_id", nullable = false)
+    @OneToOne()
+    @JoinColumn(name = "npc_id", referencedColumnName = "id")
     private NpcEntity npc;
 
-    private int option;
+    private int count;
 }

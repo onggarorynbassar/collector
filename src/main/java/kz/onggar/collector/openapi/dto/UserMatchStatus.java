@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 import kz.onggar.collector.openapi.dto.Defender;
 import kz.onggar.collector.openapi.dto.Mercenary;
+import kz.onggar.collector.openapi.dto.MercenarySpell;
 import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -19,8 +20,8 @@ import javax.validation.constraints.*;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class UserMatchStatus   {
-  @JsonProperty("id")
-  private UUID id;
+  @JsonProperty("playerId")
+  private UUID playerId;
 
   @JsonProperty("alive")
   private Boolean alive;
@@ -35,30 +36,30 @@ public class UserMatchStatus   {
 
   @JsonProperty("spells")
   @Valid
-  private List<Object> spells = null;
+  private List<MercenarySpell> spells = null;
 
-  @JsonProperty("npcAbilityOption")
-  private Integer npcAbilityOption;
+  @JsonProperty("npcAbilitySetOption")
+  private Integer npcAbilitySetOption;
 
-  public UserMatchStatus id(UUID id) {
-    this.id = id;
+  public UserMatchStatus playerId(UUID playerId) {
+    this.playerId = playerId;
     return this;
   }
 
   /**
-   * Get id
-   * @return id
+   * Get playerId
+   * @return playerId
   */
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public UUID getId() {
-    return id;
+  public UUID getPlayerId() {
+    return playerId;
   }
 
-  public void setId(UUID id) {
-    this.id = id;
+  public void setPlayerId(UUID playerId) {
+    this.playerId = playerId;
   }
 
   public UserMatchStatus alive(Boolean alive) {
@@ -139,12 +140,12 @@ public class UserMatchStatus   {
     this.mercenaries = mercenaries;
   }
 
-  public UserMatchStatus spells(List<Object> spells) {
+  public UserMatchStatus spells(List<MercenarySpell> spells) {
     this.spells = spells;
     return this;
   }
 
-  public UserMatchStatus addSpellsItem(Object spellsItem) {
+  public UserMatchStatus addSpellsItem(MercenarySpell spellsItem) {
     if (this.spells == null) {
       this.spells = new ArrayList<>();
     }
@@ -158,33 +159,34 @@ public class UserMatchStatus   {
   */
   @ApiModelProperty(value = "")
 
+  @Valid
 
-  public List<Object> getSpells() {
+  public List<MercenarySpell> getSpells() {
     return spells;
   }
 
-  public void setSpells(List<Object> spells) {
+  public void setSpells(List<MercenarySpell> spells) {
     this.spells = spells;
   }
 
-  public UserMatchStatus npcAbilityOption(Integer npcAbilityOption) {
-    this.npcAbilityOption = npcAbilityOption;
+  public UserMatchStatus npcAbilitySetOption(Integer npcAbilitySetOption) {
+    this.npcAbilitySetOption = npcAbilitySetOption;
     return this;
   }
 
   /**
-   * Get npcAbilityOption
-   * @return npcAbilityOption
+   * Get npcAbilitySetOption
+   * @return npcAbilitySetOption
   */
   @ApiModelProperty(value = "")
 
 
-  public Integer getNpcAbilityOption() {
-    return npcAbilityOption;
+  public Integer getNpcAbilitySetOption() {
+    return npcAbilitySetOption;
   }
 
-  public void setNpcAbilityOption(Integer npcAbilityOption) {
-    this.npcAbilityOption = npcAbilityOption;
+  public void setNpcAbilitySetOption(Integer npcAbilitySetOption) {
+    this.npcAbilitySetOption = npcAbilitySetOption;
   }
 
 
@@ -197,17 +199,17 @@ public class UserMatchStatus   {
       return false;
     }
     UserMatchStatus userMatchStatus = (UserMatchStatus) o;
-    return Objects.equals(this.id, userMatchStatus.id) &&
+    return Objects.equals(this.playerId, userMatchStatus.playerId) &&
         Objects.equals(this.alive, userMatchStatus.alive) &&
         Objects.equals(this.defenders, userMatchStatus.defenders) &&
         Objects.equals(this.mercenaries, userMatchStatus.mercenaries) &&
         Objects.equals(this.spells, userMatchStatus.spells) &&
-        Objects.equals(this.npcAbilityOption, userMatchStatus.npcAbilityOption);
+        Objects.equals(this.npcAbilitySetOption, userMatchStatus.npcAbilitySetOption);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, alive, defenders, mercenaries, spells, npcAbilityOption);
+    return Objects.hash(playerId, alive, defenders, mercenaries, spells, npcAbilitySetOption);
   }
 
   @Override
@@ -215,12 +217,12 @@ public class UserMatchStatus   {
     StringBuilder sb = new StringBuilder();
     sb.append("class UserMatchStatus {\n");
     
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    playerId: ").append(toIndentedString(playerId)).append("\n");
     sb.append("    alive: ").append(toIndentedString(alive)).append("\n");
     sb.append("    defenders: ").append(toIndentedString(defenders)).append("\n");
     sb.append("    mercenaries: ").append(toIndentedString(mercenaries)).append("\n");
     sb.append("    spells: ").append(toIndentedString(spells)).append("\n");
-    sb.append("    npcAbilityOption: ").append(toIndentedString(npcAbilityOption)).append("\n");
+    sb.append("    npcAbilitySetOption: ").append(toIndentedString(npcAbilitySetOption)).append("\n");
     sb.append("}");
     return sb.toString();
   }

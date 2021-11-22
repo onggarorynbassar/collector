@@ -32,8 +32,9 @@ CREATE TABLE collector.settings
 CREATE TABLE collector.user_settings
 (
     id         uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id    uuid NOT NULL REFERENCES collector.user (id),
-    setting_id uuid NOT NULL REFERENCES collector.settings (id)
+    user_id    uuid    NOT NULL REFERENCES collector.user (id),
+    setting_id uuid    NOT NULL REFERENCES collector.settings (id),
+    value      integer NOT NULL DEFAULT 0
 );
 
 CREATE TABLE collector.wave
@@ -134,10 +135,19 @@ CREATE TABLE collector.user_wave_mercenary_npc
 
 CREATE TABLE collector.user_wave_mercenary_spell
 (
-    id               uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id          uuid NOT NULL REFERENCES collector.user (id),
-    wave_history_id  uuid NOT NULL REFERENCES collector.wave_history (id),
-    mercenary_npc_id uuid NOT NULL REFERENCES collector.mercenary_npc (id)
+    id                 uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id            uuid NOT NULL REFERENCES collector.user (id),
+    wave_history_id    uuid NOT NULL REFERENCES collector.wave_history (id),
+    mercenary_spell_id uuid NOT NULL REFERENCES collector.mercenary_spell (id)
+);
+
+
+CREATE TABLE collector.user_wave_ability_set
+(
+    id                 uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id            uuid NOT NULL REFERENCES collector.user (id),
+    wave_history_id    uuid NOT NULL REFERENCES collector.wave_history (id),
+    npc_ability_set_id uuid NOT NULL REFERENCES collector.npc_ability_set (id)
 );
 
 COMMENT ON COLUMN collector.user.simple_rating IS 'Вычисляется каждую игру';

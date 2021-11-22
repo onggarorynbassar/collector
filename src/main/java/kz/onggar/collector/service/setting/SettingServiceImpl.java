@@ -7,8 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SettingServiceImpl implements SettingService {
-
-    SettingRepository settingRepository;
+    private final SettingRepository settingRepository;
 
     public SettingServiceImpl(SettingRepository settingRepository) {
         this.settingRepository = settingRepository;
