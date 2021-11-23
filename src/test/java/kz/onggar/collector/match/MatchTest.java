@@ -1,7 +1,10 @@
 package kz.onggar.collector.match;
 
 import kz.onggar.collector.AbstractTest;
-import kz.onggar.collector.openapi.dto.*;
+import kz.onggar.collector.openapi.dto.MatchStart;
+import kz.onggar.collector.openapi.dto.MatchUpdate;
+import kz.onggar.collector.openapi.dto.SteamIds;
+import kz.onggar.collector.openapi.dto.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,42 +62,6 @@ class MatchTest extends AbstractTest {
         );
     }
 
-    private boolean testPlayerDefenders(List<UserMatchStatus> users) {
-        for (UserMatchStatus user : users) {
-            for (Defender defender : user.getDefenders()) {
-                var optionalDefender = defenderService.findDefenderByName(defender.getName());
-                if (optionalDefender.name() == null) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private boolean testMercenaries(List<UserMatchStatus> users) {
-        for (UserMatchStatus user : users) {
-            for (Mercenary mercenary : user.getMercenaries()) {
-                var optionalMercenary = mercenaryService.getMercenaryByName(mercenary.getName());
-                if (optionalMercenary.name() == null) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private boolean testMercenarySpells(List<UserMatchStatus> users) {
-        for (UserMatchStatus user : users) {
-            for (MercenarySpell mercenarySpell : user.getSpells()) {
-                var optionalMercenarySpell = mercenarySpellService.getMercenarySpellByName(mercenarySpell.getName());
-                if (optionalMercenarySpell.name() == null) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     @Test
     @Transactional
     void updateMatchWithPerfectData() throws Exception {
@@ -111,11 +78,7 @@ class MatchTest extends AbstractTest {
         var mercenariesDTO = createTestMercenariesDTO();
         var spellsDTO = createTestSpellsDTO();
 
-        var matchUpdate = new MatchUpdate();
-        matchUpdate.setMatchId(startMatch.getMatch().getId());
-        matchUpdate.setNpcName(testNpcs.get(0).name());
-        matchUpdate.setWave(15);
-        matchUpdate.setUserMatchStatuses(createMockUserMatchStatuses(startMatch, defendersDTO, mercenariesDTO, spellsDTO));
+        var matchUpdate = createTestMatchUpdate(startMatch, testNpcs, defendersDTO, mercenariesDTO, spellsDTO, 15);
 
         makePutRequest(mvc, "/matches", matchUpdate, status().isOk());
 

@@ -236,4 +236,57 @@ public class AbstractTest {
 
         return userMatchStatuses;
     }
+
+    protected MatchUpdate createTestMatchUpdate(
+            MatchStart startMatch,
+            List<NpcEntity> testNpcs,
+            List<Defender> defendersDTO,
+            List<Mercenary> mercenariesDTO,
+            List<MercenarySpell> spellsDTO,
+            int waveNumber
+    ) {
+        var matchUpdate = new MatchUpdate();
+        matchUpdate.setMatchId(startMatch.getMatch().getId());
+        matchUpdate.setNpcName(testNpcs.get(0).name());
+        matchUpdate.setWave(waveNumber);
+        matchUpdate.setUserMatchStatuses(createMockUserMatchStatuses(startMatch, defendersDTO, mercenariesDTO, spellsDTO));
+
+        return matchUpdate;
+    }
+
+    protected boolean testPlayerDefenders(List<UserMatchStatus> users) {
+        for (UserMatchStatus user : users) {
+            for (Defender defender : user.getDefenders()) {
+                var optionalDefender = defenderService.findDefenderByName(defender.getName());
+                if (optionalDefender.name() == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    protected boolean testMercenaries(List<UserMatchStatus> users) {
+        for (UserMatchStatus user : users) {
+            for (Mercenary mercenary : user.getMercenaries()) {
+                var optionalMercenary = mercenaryService.getMercenaryByName(mercenary.getName());
+                if (optionalMercenary.name() == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    protected boolean testMercenarySpells(List<UserMatchStatus> users) {
+        for (UserMatchStatus user : users) {
+            for (MercenarySpell mercenarySpell : user.getSpells()) {
+                var optionalMercenarySpell = mercenarySpellService.getMercenarySpellByName(mercenarySpell.getName());
+                if (optionalMercenarySpell.name() == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
